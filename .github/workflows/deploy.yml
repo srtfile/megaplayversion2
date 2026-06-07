@@ -1,0 +1,111 @@
+# .github/workflows/deploy.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# Triggered on every push to main.
+#
+# What it does:
+#   1. Checks out the repo
+#   2. Sets up Python 3.11 and installs all deps
+#   3. Runs smoke tests (health, profiles, proxy, extract endpoint)
+#   4. Calls the Render deploy hook to trigger a fresh production build
+#
+# Required GitHub Secrets (Settings → Secrets → Actions):
+#   RENDER_DEPLOY_HOOK_URL  — Render dashboard → your service → Settings → Deploy Hook
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: CI → Deploy to Render
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── 1. Test ──────────────────────────────────────────────────────────────
+  test:
+    name: Smoke-test Flask app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Smoke-test — import + route check
+        run: |
+          python - <<'PYEOF'
+          import app as a
+
+          client = a.app.test_client()
+
+          # /health must return 200
+          r = client.get("/health")
+          assert r.status_code == 200, f"/health → {r.status_code}"
+
+          # /api/profiles GET must return JSON dict
+          r = client.get("/api/profiles")
+          assert r.status_code == 200, f"/api/profiles → {r.status_code}"
+          data = r.get_json()
+          assert isinstance(data, dict), "profiles response must be a dict"
+
+          # /proxy without url must return 400
+          r = client.get("/proxy")
+          assert r.status_code == 400, f"/proxy (no url) → {r.status_code}"
+
+          # /api/extract without body must return 400
+          r = client.post("/api/extract",
+                          data='{}',
+                          content_type="application/json")
+          assert r.status_code == 400, f"/api/extract (no tmdb_id) → {r.status_code}"
+
+          # /api/extract OPTIONS preflight must return 204
+          r = client.options("/api/extract")
+          assert r.status_code == 204, f"/api/extract OPTIONS → {r.status_code}"
+
+          # CORS header present on all responses
+          r = client.get("/health")
+          assert "Access-Control-Allow-Origin" in r.headers, "CORS header missing"
+
+          print("✅ All smoke tests passed")
+          PYEOF
+
+  # ── 2. Deploy (main branch only) ────────────────────────────────────────
+  deploy:
+    name: Trigger Render deploy
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Trigger Render deploy hook
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "⚠️  RENDER_DEPLOY_HOOK_URL secret not set — skipping deploy trigger."
+            echo "    Add it: GitHub repo → Settings → Secrets → Actions"
+            exit 0
+          fi
+
+          echo "🚀 Triggering Render deploy..."
+          HTTP_STATUS=$(curl -s -o /tmp/render_response.txt -w "%{http_code}" \
+            -X POST "$RENDER_DEPLOY_HOOK_URL")
+          BODY=$(cat /tmp/render_response.txt)
+
+          echo "Render responded: HTTP $HTTP_STATUS"
+          echo "$BODY"
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "✅ Render deploy triggered successfully."
+          else
+            echo "❌ Render deploy hook returned HTTP $HTTP_STATUS"
+            exit 1
+          fi
