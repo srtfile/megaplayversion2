@@ -478,25 +478,40 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
   </div>
 </div>
 
-<!-- SEARCH VIEW (Anime via Jikan) -->
+<!-- COMBINED SEARCH VIEW (Anime + Movies + TV) -->
 <div class="view" id="v-search">
   <div class="wrap">
     <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</button>
     <div class="sec-hd"><h2 class="sec-ttl" id="search-ttl">Results</h2></div>
-    <div class="agrid" id="search-grid"><div class="loading-st"><div class="spin"></div></div></div>
+
+    <!-- Movies & TV section -->
+    <div id="combined-tmdb-section" style="display:none">
+      <div style="display:flex;align-items:center;gap:8px;margin:0 0 12px">
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:700">🎬 Movies &amp; TV Shows</span>
+        <span style="flex:1;height:1px;background:var(--border)"></span>
+        <span class="epbadge" id="tmdb-result-count"></span>
+      </div>
+      <div class="tmdb-search-grid" id="tmdb-search-grid"></div>
+    </div>
+
+    <!-- Anime section -->
+    <div id="combined-anime-section" style="display:none;margin-top:28px">
+      <div style="display:flex;align-items:center;gap:8px;margin:0 0 12px">
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:700">🌸 Anime</span>
+        <span style="flex:1;height:1px;background:var(--border)"></span>
+        <span class="epbadge" id="anime-result-count"></span>
+      </div>
+      <div class="agrid" id="search-grid"></div>
+    </div>
+
+    <!-- No results fallback -->
+    <div id="combined-no-results" style="display:none" class="err-st">No results found.</div>
     <div class="pfooter"></div>
   </div>
 </div>
 
-<!-- TMDB SEARCH VIEW (Movies & TV) -->
-<div class="view" id="v-tmdb-search">
-  <div class="wrap">
-    <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</button>
-    <div class="sec-hd"><h2 class="sec-ttl" id="tmdb-search-ttl">Movies &amp; TV</h2></div>
-    <div class="tmdb-search-grid" id="tmdb-search-grid"><div class="loading-st"><div class="spin"></div></div></div>
-    <div class="pfooter"></div>
-  </div>
-</div>
+<!-- Keep v-tmdb-search as alias so existing references don't break -->
+<div class="view" id="v-tmdb-search" style="display:none!important"></div>
 
 <!-- WATCH VIEW (Anime) -->
 <div class="view" id="v-watch">
@@ -609,6 +624,27 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
               <span class="mp-panel-sub" id="mpPanelSub">HLS proxy, headers, saved CDN rules</span>
             </summary>
             <div class="mp-panel-body">
+
+              <!-- ─── Stream Extractor ─── -->
+              <div class="sx-panel" id="sx-panel" style="margin:0 0 14px;border-radius:var(--r)">
+                <div class="sx-header" style="padding:10px 12px">
+                  <div class="sx-title" style="font-size:15px"><i class="fas fa-bolt"></i> Stream Extractor</div>
+                  <button class="sx-extract-btn" id="sx-extract-btn" onclick="sxExtract()">
+                    <i class="fas fa-satellite-dish"></i> Extract Streams
+                  </button>
+                  <div class="sx-status" id="sx-status">Click to fetch direct stream URLs for this title.</div>
+                </div>
+                <div class="sx-progress" id="sx-progress-wrap" style="display:none">
+                  <div class="sx-progress-bar" id="sx-progress-bar"></div>
+                </div>
+                <div id="sx-body">
+                  <div class="sx-empty">
+                    <i class="fas fa-satellite-dish"></i>
+                    <span>Extracts HLS/MP4 URLs and iframe embeds from all pipeline hosts.</span>
+                  </div>
+                </div>
+              </div>
+
               <div class="mp-url-labelrow">
                 <div class="mp-label">Stream URL</div>
                 <span class="mp-url-badge" id="mpUrlTypeBadge"></span>
@@ -764,25 +800,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
           Powered by RiveStream. Click a download link in the player — streams open inline automatically. Switch servers if needed.
         </div>
 
-        <!-- ─── Stream Extractor Panel ─── -->
-        <div class="sx-panel" id="sx-panel">
-          <div class="sx-header">
-            <div class="sx-title"><i class="fas fa-bolt"></i> Stream Extractor</div>
-            <button class="sx-extract-btn" id="sx-extract-btn" onclick="sxExtract()">
-              <i class="fas fa-satellite-dish"></i> Extract Streams
-            </button>
-            <div class="sx-status" id="sx-status">Click "Extract Streams" to fetch direct stream URLs for this title.</div>
-          </div>
-          <div class="sx-progress" id="sx-progress-wrap" style="display:none">
-            <div class="sx-progress-bar" id="sx-progress-bar"></div>
-          </div>
-          <div id="sx-body">
-            <div class="sx-empty">
-              <i class="fas fa-satellite-dish"></i>
-              <span>Extract direct HLS/MP4 stream URLs or iframe embeds from supported hosts.</span>
-            </div>
-          </div>
-        </div>
 
 
         <!-- Episode panel for TV shows -->
@@ -2072,29 +2089,69 @@ function goHome(){ showView('v-home'); document.getElementById('modeTabs').style
 async function doSearch(){
   const q=document.getElementById('sinput').value.trim();
   if(!q) return;
-  if(currentMode === 'tmdb'){
-    await doTmdbSearch(q);
-  } else {
-    await doAnimeSearch(q);
-  }
+  await doCombinedSearch(q);
 }
 
-async function doAnimeSearch(q){
+// Legacy wrappers kept so any other call sites don't break
+async function doAnimeSearch(q){ await doCombinedSearch(q); }
+async function doTmdbSearch(q){ await doCombinedSearch(q); }
+
+async function doCombinedSearch(q){
   document.getElementById('search-ttl').textContent=`Search: "${q}"`;
-  document.getElementById('search-grid').innerHTML='<div class="loading-st"><div class="spin"></div></div>';
-  showView('v-search');
-  const d=await jikan(`/anime?q=${encodeURIComponent(q)}&limit=25`);
-  const grid=document.getElementById('search-grid'); grid.innerHTML='';
-  (d?.data||[]).forEach(a=>{ const c=makeAnimeCard(a); grid.appendChild(c); });
-  if(!d?.data?.length) grid.innerHTML='<div class="err-st">No results.</div>';
-}
+  // Show view with loading state
+  const tmdbSec  = document.getElementById('combined-tmdb-section');
+  const animeSec = document.getElementById('combined-anime-section');
+  const noRes    = document.getElementById('combined-no-results');
+  const tmdbGrid = document.getElementById('tmdb-search-grid');
+  const animeGrid= document.getElementById('search-grid');
+  const tmdbCnt  = document.getElementById('tmdb-result-count');
+  const animeCnt = document.getElementById('anime-result-count');
 
-async function doTmdbSearch(q){
-  document.getElementById('tmdb-search-ttl').textContent=`Search: "${q}"`;
-  document.getElementById('tmdb-search-grid').innerHTML='<div class="loading-st"><div class="spin"></div></div>';
-  showView('v-tmdb-search');
-  const d = await tmdbFetch(`/search/multi?query=${encodeURIComponent(q)}&language=en-US&page=1`);
-  renderTmdbGrid(d?.results||[], 'tmdb-search-grid');
+  tmdbSec.style.display  = 'block';
+  animeSec.style.display = 'block';
+  noRes.style.display    = 'none';
+  tmdbGrid.innerHTML  = '<div class="loading-st"><div class="spin"></div></div>';
+  animeGrid.innerHTML = '<div class="loading-st"><div class="spin"></div></div>';
+  if(tmdbCnt)  tmdbCnt.textContent  = '';
+  if(animeCnt) animeCnt.textContent = '';
+
+  showView('v-search');
+
+  // Fire both searches in parallel
+  const [tmdbData, animeData] = await Promise.allSettled([
+    tmdbFetch(`/search/multi?query=${encodeURIComponent(q)}&language=en-US&page=1`),
+    jikan(`/anime?q=${encodeURIComponent(q)}&limit=20`)
+  ]);
+
+  // ── Render TMDB results
+  const tmdbResults = (tmdbData.status==='fulfilled' ? tmdbData.value?.results||[] : [])
+    .filter(r=>r.media_type==='movie'||r.media_type==='tv');
+  tmdbGrid.innerHTML = '';
+  if(tmdbResults.length){
+    tmdbResults.forEach(r=>{ tmdbGrid.appendChild(makeTmdbCard(r)); });
+    if(tmdbCnt) tmdbCnt.textContent = `${tmdbResults.length} results`;
+  } else {
+    tmdbGrid.innerHTML = '<div class="err-st" style="grid-column:1/-1">No movies or TV shows found.</div>';
+    if(tmdbCnt) tmdbCnt.textContent = '0';
+  }
+
+  // ── Render Anime results
+  const animeResults = animeData.status==='fulfilled' ? animeData.value?.data||[] : [];
+  animeGrid.innerHTML = '';
+  if(animeResults.length){
+    animeResults.forEach(a=>{ animeGrid.appendChild(makeAnimeCard(a)); });
+    if(animeCnt) animeCnt.textContent = `${animeResults.length} results`;
+  } else {
+    animeGrid.innerHTML = '<div class="err-st" style="grid-column:1/-1">No anime found.</div>';
+    if(animeCnt) animeCnt.textContent = '0';
+  }
+
+  // Show no-results if both empty
+  if(!tmdbResults.length && !animeResults.length){
+    tmdbSec.style.display  = 'none';
+    animeSec.style.display = 'none';
+    noRes.style.display    = 'block';
+  }
 }
 
 function renderTmdbGrid(results, gridId){
