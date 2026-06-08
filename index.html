@@ -2242,22 +2242,37 @@ function sxPlayStream(streamUrl, label, streamType, headersJson, btnId) {
   try { headers = JSON.parse(headersJson); } catch {}
   const referer = headers.Referer || headers.referer || '';
   const origin  = headers.Origin  || headers.origin  || '';
-  let finalUrl = streamUrl;
-  if ((streamType === 'm3u8' || streamUrl.includes('.m3u8')) && referer) {
-    finalUrl = `${sxApiBase()}/proxy?url=${encodeURIComponent(streamUrl)}&ref=${encodeURIComponent(referer)}`;
-  }
-  // Route through the main player input so it plays via loadFromInput()
+
+  // 1. Force-open the MegaPlayer panel so the input is visible
+  const panel = document.getElementById('mpPanel');
+  if (panel && !panel.open) panel.open = true;
+
+  // 2. Show the real stream URL in the main input (proxy applied internally by loadStream)
   const urlIn = document.getElementById('mpUrlIn');
   if (urlIn) {
-    urlIn.value = finalUrl;
+    urlIn.value = streamUrl;
     urlIn.dispatchEvent(new Event('input'));
+
+    // 3. Flash-highlight so the user sees it update
+    urlIn.style.transition = 'box-shadow 0.15s, border-color 0.15s';
+    urlIn.style.borderColor = 'var(--acc)';
+    urlIn.style.boxShadow   = '0 0 0 3px var(--glow)';
+    setTimeout(() => { urlIn.style.borderColor = ''; urlIn.style.boxShadow = ''; }, 1400);
+
+    // 4. Scroll into view & focus
+    urlIn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    urlIn.focus();
   }
-  // Pre-fill referer/origin header fields if present
+
+  // 5. Pre-fill header fields (always clear if empty, so stale values don't persist)
   const refIn  = document.getElementById('mpRefIn');
   const origIn = document.getElementById('mpOrigIn');
-  if (refIn  && referer) refIn.value  = referer;
-  if (origIn && origin)  origIn.value = origin;
-  loadFromInput();
+  if (refIn)  refIn.value  = referer;
+  if (origIn) origIn.value = origin;
+
+  // 6. Play — pass raw streamUrl so loadStream handles proxy internally
+  loadStream(streamUrl, referer, origin, { autoplay: true, exposeUrl: true });
+
   toast(`Playing ${label} (${streamType?.toUpperCase()||'stream'})`, '🎬', 2500);
 }
 
