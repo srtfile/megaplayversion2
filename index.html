@@ -2241,12 +2241,23 @@ function sxPlayStream(streamUrl, label, streamType, headersJson, btnId) {
   let headers = {};
   try { headers = JSON.parse(headersJson); } catch {}
   const referer = headers.Referer || headers.referer || '';
+  const origin  = headers.Origin  || headers.origin  || '';
   let finalUrl = streamUrl;
   if ((streamType === 'm3u8' || streamUrl.includes('.m3u8')) && referer) {
     finalUrl = `${sxApiBase()}/proxy?url=${encodeURIComponent(streamUrl)}&ref=${encodeURIComponent(referer)}`;
   }
-  openHlsLayer(finalUrl, `${label} · ${streamType?.toUpperCase()||'STREAM'}`);
-  document.getElementById('wep-lbl').textContent = `${streamType?.toUpperCase()||'Stream'} · ${label}`;
+  // Route through the main player input so it plays via loadFromInput()
+  const urlIn = document.getElementById('mpUrlIn');
+  if (urlIn) {
+    urlIn.value = finalUrl;
+    urlIn.dispatchEvent(new Event('input'));
+  }
+  // Pre-fill referer/origin header fields if present
+  const refIn  = document.getElementById('mpRefIn');
+  const origIn = document.getElementById('mpOrigIn');
+  if (refIn  && referer) refIn.value  = referer;
+  if (origIn && origin)  origIn.value = origin;
+  loadFromInput();
   toast(`Playing ${label} (${streamType?.toUpperCase()||'stream'})`, '🎬', 2500);
 }
 
