@@ -665,9 +665,8 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
                 <div>
                   <div class="mp-label">Proxy Mode</div>
                   <select class="mp-select-wide" id="mpProxyMode" onchange="onProxyModeChange()">
-                    <option value="local">Local Proxy (/proxy)</option>
+                    <option value="direct" selected>Direct (No Proxy)</option>
                     <option value="custom">Custom Proxy</option>
-                    <option value="direct" selected>Direct</option>
                   </select>
                 </div>
               </div>
@@ -675,7 +674,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
                 <div class="mp-row">
                   <div style="flex:2;min-width:180px">
                     <div class="mp-label">Custom Proxy Base URL</div>
-                    <input class="mp-input" id="mpCustomProxyUrl" type="text" placeholder="Custom proxy base URL">
+                    <input class="mp-input" id="mpCustomProxyUrl" type="text" placeholder="Custom proxy base URL" value="https://foxy-doxy.andruilsyestems.workers.dev/proxy">
                   </div>
                   <div>
                     <div class="mp-label">Format</div>
@@ -691,7 +690,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 
               <!-- ⑤ STATUS + SAVE RULE -->
               <div class="mp-statusrow">
-                <div class="mp-status" id="mpStatus">Ready — Hianime m3u8 streams will use the selected proxy.</div>
+                <div class="mp-status" id="mpStatus">Ready — use Direct (no proxy) or Custom Proxy (foxy-doxy CF Worker).</div>
                 <button class="mp-btn sec" onclick="saveCurrentRule()" title="Save Referer, Origin, and proxy mode for this CDN">
                   <i class="fas fa-floppy-disk"></i> Save Rule
                 </button>
@@ -968,7 +967,7 @@ let mpProfileCache = null;
 let mpCurrentStreamUrl = '';
 let mpCurrentRef = '';
 let mpCurrentOrigin = '';
-let mpCurrentCustomProxyUrl = '';
+let mpCurrentCustomProxyUrl = 'https://foxy-doxy.andruilsyestems.workers.dev/proxy';
 
 const MP_KNOWN_RULES = [
   { cdn:['cdn.mewstream.buzz','mewstream.buzz','voltara.click','lostproject.club'], ref:'https://megaplay.buzz/', origin:'https://megaplay.buzz', label:'MegaPlay' },
@@ -1089,9 +1088,8 @@ function mpEncodeB64(value) {
   return btoa(unescape(encodeURIComponent(value))).replace(/\+/g,'%2B').replace(/=/g,'%3D');
 }
 function buildSrc(m3u8, ref, orig) {
-  const mode = document.getElementById('mpProxyMode')?.value || 'local';
+  const mode = document.getElementById('mpProxyMode')?.value || 'direct';
   ref = ref || ''; orig = orig || '';
-  if (mode === 'local') return `/proxy?url=${encodeURIComponent(m3u8)}&ref=${encodeURIComponent(ref)}&origin=${encodeURIComponent(orig)}`;
   if (mode === 'custom') {
     const base = (document.getElementById('mpCustomProxyUrl')?.value || mpCurrentCustomProxyUrl || '').trim().replace(/\/$/,'');
     const format = document.getElementById('mpProxyFormat')?.value || 'foxy';
@@ -1186,7 +1184,7 @@ async function loadStream(streamUrl, ref='', orig='', options={}) {
   ref = fields.ref; orig = fields.origin;
   mpDestroyHls(); mpResetProgress(); mpSetLoading(false);
   const mode = document.getElementById('mpProxyMode')?.value || 'local';
-  const modeLabel = mode === 'local' ? 'local proxy' : mode === 'custom' ? 'custom proxy' : 'direct';
+  const modeLabel = mode === 'custom' ? 'CF Worker proxy' : 'direct';
   const src = buildSrc(streamUrl, ref, orig);
   if (isIframeUrl(streamUrl)) { showIframeMode(streamUrl, { sandbox:options.fallbackSandbox??'panel', label:options.label, exposeUrl }); setStatus('Opening in iframe mode.', 'var(--acc3)'); return true; }
   showVideoMode(options.label || streamUrl);
@@ -1318,7 +1316,7 @@ async function onUrlInput() {
 async function initMegaPlayer() {
   if (mpReady || !mpVid) return;
   mpReady = true;
-  const savedMode = localStorage.getItem('megaplayer_proxy_mode') || 'direct';
+  const savedMode = localStorage.getItem('megaplayer_proxy_mode') || 'direct'; // foxy-doxy CF Worker hardcoded as default custom URL
   const savedFmt = localStorage.getItem('megaplayer_proxy_fmt');
   const savedCustom = localStorage.getItem('megaplayer_proxy_custom_url');
   if (document.getElementById('mpProxyMode')) document.getElementById('mpProxyMode').value = savedMode;
@@ -1386,7 +1384,7 @@ async function initMegaPlayer() {
   mpUpdatePlayIcon(); mpUpdateMuteIcon();
   showIframeMode('about:blank', { sandbox:'permissive' });
   await renderSavedRules();
-  setStatus('Ready — Hianime m3u8 streams will use the selected proxy.', 'var(--muted)');
+  setStatus('Ready — use Direct (no proxy) or Custom Proxy (foxy-doxy CF Worker).', 'var(--muted)');
 }
 
 // ─── INLINE HLS LAYER (replaces rive-hls-layer + separate TMDB player) ─
