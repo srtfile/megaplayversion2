@@ -279,6 +279,32 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
   .mp-panel-body{padding:0 12px 12px}
   .mp-row>div,.mp-proxy-row>div{min-width:100%}
   .mp-panel-sub{display:none}
+  /* Extractor buttons wrap nicely on mobile */
+  .sx-btns{gap:5px;padding:0 10px 10px}
+  .sx-btn{font-size:11px;padding:5px 9px}
+  .sx-header{gap:8px;padding:9px 10px}
+  .sx-extract-btn{font-size:11px;padding:6px 12px}
+  .player-ctrl-bar{padding:8px 12px;gap:6px}
+  .ctoggle{font-size:11px;padding:5px 10px}
+  .srvbar{padding:8px 12px;gap:7px}
+  .srvtab{font-size:11px;padding:5px 10px}
+  /* Watch layout stacks on small screens */
+  .wlayout{grid-template-columns:1fr}
+  .hbtn{padding:10px 18px;font-size:14px}
+  /* URL input row stacks on tiny screens */
+  .mp-row{flex-direction:column}
+  .mp-btn{width:100%;justify-content:center}
+  /* Proxy row stacks */
+  .mp-proxy-row{flex-direction:column}
+}
+@media(max-width:480px){
+  .logo-txt{font-size:20px}
+  .sx-section-lbl{font-size:9px}
+  .mp-label{font-size:9px}
+  .mp-status{font-size:11px}
+  .mp-rules-title{font-size:9px}
+  .mp-rule-host{font-size:11px}
+  .mp-rule-ref{font-size:10px}
 }
 
 /* ─── STREAM EXTRACTOR (inside MegaPlayer panel) ─── */
@@ -641,7 +667,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
                   <select class="mp-select-wide" id="mpProxyMode" onchange="onProxyModeChange()">
                     <option value="local">Local Proxy (/proxy)</option>
                     <option value="custom">Custom Proxy</option>
-                    <option value="direct">Direct</option>
+                    <option value="direct" selected>Direct</option>
                   </select>
                 </div>
               </div>
@@ -657,6 +683,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
                       <option value="foxy">foxy-doxy (?url=B64&amp;headers=B64)</option>
                       <option value="plain">Plain (?url=ENC&amp;referer=ENC)</option>
                       <option value="cors">CORS-anywhere (prepend)</option>
+                      <option value="cfworker">CF Worker (?url=ENC&amp;referer=ENC&amp;origin=ENC)</option>
                     </select>
                   </div>
                 </div>
@@ -1075,6 +1102,7 @@ function buildSrc(m3u8, ref, orig) {
     }
     if (format === 'plain') { let q=`${base}?url=${encodeURIComponent(m3u8)}`; if(ref) q+=`&referer=${encodeURIComponent(ref)}`; if(orig) q+=`&origin=${encodeURIComponent(orig)}`; return q; }
     if (format === 'cors') return `${base}/${m3u8}`;
+    if (format === 'cfworker') { let q=`${base}?url=${encodeURIComponent(m3u8)}`; if(ref) q+=`&referer=${encodeURIComponent(ref)}`; if(orig) q+=`&origin=${encodeURIComponent(orig)}`; return q; }
   }
   return m3u8;
 }
@@ -1233,8 +1261,9 @@ async function renderSavedRules(data) {
   entries.forEach(([host, rule]) => {
     const item = document.createElement('div'); item.className = 'mp-rule-item';
     const info = document.createElement('div'); info.className = 'mp-rule-info';
-    const hostEl = document.createElement('div'); hostEl.className = 'mp-rule-host'; hostEl.textContent = `${host}${rule.proxyMode ? ' [' + rule.proxyMode + ']' : ''}`;
-    const refEl = document.createElement('div'); refEl.className = 'mp-rule-ref'; refEl.textContent = rule.ref || 'no referer';
+    const hostEl = document.createElement('div'); hostEl.className = 'mp-rule-host'; hostEl.textContent = `${host}`;
+    const modeInfo = rule.proxyMode ? ` <span style="color:var(--acc3);font-size:10px;font-family:'JetBrains Mono',monospace">[${rule.proxyMode}${rule.proxyFmt && rule.proxyFmt!=='foxy' ? ' · '+rule.proxyFmt : ''}]</span>` : '';
+    const refEl = document.createElement('div'); refEl.className = 'mp-rule-ref'; refEl.innerHTML = `${rule.ref || 'no referer'}${modeInfo}`;
     const del = document.createElement('button'); del.className = 'mp-rule-del'; del.type = 'button'; del.textContent = 'Delete';
     del.addEventListener('click', () => mpDeleteUserRule(host));
     info.appendChild(hostEl); info.appendChild(refEl);
@@ -1263,16 +1292,36 @@ async function onUrlInput() {
   const type = detectUrlType(url);
   if (type === 'iframe') { setStatus('Embed URL detected — it will open in iframe mode.', 'var(--acc3)'); return; }
   const fields = await mpApplyUrlFields(url, document.getElementById('mpRefIn')?.value.trim(), document.getElementById('mpOrigIn')?.value.trim(), { showBadge:true });
-  if (fields.detected?.source === 'saved') setStatus(`Saved rule applied: ${fields.detected.label}.`, 'var(--acc3)');
-  else if (fields.detected?.source === 'built-in') setStatus(`Header profile: ${fields.detected.label}.`, 'var(--acc3)');
+  if (fields.detected?.source === 'saved') {
+    const pmode = fields.detected.proxyMode || 'direct';
+    setStatus(`✔ Saved profile: ${fields.detected.label} · proxy: ${pmode}`, 'var(--green)');
+    // Auto-apply saved proxy mode from profile
+    if (fields.detected.proxyMode) {
+      const modeEl = document.getElementById('mpProxyMode');
+      if (modeEl) { modeEl.value = fields.detected.proxyMode; onProxyModeChange(); }
+    }
+    if (fields.detected.proxyFmt) {
+      const fmtEl = document.getElementById('mpProxyFormat');
+      if (fmtEl) fmtEl.value = fields.detected.proxyFmt;
+    }
+    if (fields.detected.customUrl) {
+      const custEl = document.getElementById('mpCustomProxyUrl');
+      if (custEl) custEl.value = fields.detected.customUrl;
+      mpCurrentCustomProxyUrl = fields.detected.customUrl;
+    }
+  } else if (fields.detected?.source === 'built-in') {
+    setStatus(`ℹ Header profile: ${fields.detected.label} (built-in).`, 'var(--acc3)');
+  } else {
+    setStatus('Paste a URL and press Play, or save a rule for this CDN.', 'var(--muted)');
+  }
 }
 async function initMegaPlayer() {
   if (mpReady || !mpVid) return;
   mpReady = true;
-  const savedMode = localStorage.getItem('megaplayer_proxy_mode');
+  const savedMode = localStorage.getItem('megaplayer_proxy_mode') || 'direct';
   const savedFmt = localStorage.getItem('megaplayer_proxy_fmt');
   const savedCustom = localStorage.getItem('megaplayer_proxy_custom_url');
-  if (savedMode && document.getElementById('mpProxyMode')) document.getElementById('mpProxyMode').value = savedMode;
+  if (document.getElementById('mpProxyMode')) document.getElementById('mpProxyMode').value = savedMode;
   if (savedFmt && document.getElementById('mpProxyFormat')) document.getElementById('mpProxyFormat').value = savedFmt;
   if (savedCustom) mpCurrentCustomProxyUrl = savedCustom;
   onProxyModeChange();
@@ -2235,47 +2284,109 @@ function sxPlayEmbed(embedUrl, label, btnId) {
   toast(`Loading iframe: ${label}`, '📺', 2500);
 }
 
-// Play an extracted stream — opens in the inline HLS layer
+// Play an extracted stream — routes through the main mpUrlIn input
 function sxPlayStream(streamUrl, label, streamType, headersJson, btnId) {
   sxSetActiveBtn(btnId);
+
+  // Parse headers from the stream metadata
   let headers = {};
   try { headers = JSON.parse(headersJson); } catch {}
-  const referer = headers.Referer || headers.referer || '';
-  const origin  = headers.Origin  || headers.origin  || '';
+  const metaRef    = headers.Referer || headers.referer || '';
+  const metaOrigin = headers.Origin  || headers.origin  || '';
 
-  // 1. Force-open the MegaPlayer panel so the input is visible
-  const panel = document.getElementById('mpPanel');
-  if (panel && !panel.open) panel.open = true;
+  // ── PROFILE AUTO-APPLY ─────────────────────────────────────────────
+  // Check if there is a saved profile matching this stream's CDN hostname.
+  // If yes, apply its proxy mode / referer / origin / custom-proxy settings.
+  // The extracted stream's own headers are used as fallback.
+  (async () => {
+    let applyRef    = metaRef;
+    let applyOrigin = metaOrigin;
+    let applyMode   = null;
+    let applyFmt    = null;
+    let applyCustom = null;
 
-  // 2. Show the real stream URL in the main input (proxy applied internally by loadStream)
-  const urlIn = document.getElementById('mpUrlIn');
-  if (urlIn) {
-    urlIn.value = streamUrl;
-    urlIn.dispatchEvent(new Event('input'));
+    try {
+      const profiles = await mpLoadUserRules();
+      let host = '';
+      try { host = new URL(streamUrl).hostname.toLowerCase(); } catch {}
+      if (host) {
+        // Check built-in rules first
+        for (const rule of MP_KNOWN_RULES) {
+          if (rule.cdn.some(c => host.includes(c))) {
+            if (!applyRef)    applyRef    = rule.ref;
+            if (!applyOrigin) applyOrigin = rule.origin;
+            break;
+          }
+        }
+        // User-saved profiles override built-in
+        for (const [savedHost, data] of Object.entries(profiles)) {
+          if (host.includes(savedHost.toLowerCase())) {
+            applyRef    = data.ref    || applyRef;
+            applyOrigin = data.origin || applyOrigin;
+            applyMode   = data.proxyMode   || null;
+            applyFmt    = data.proxyFmt    || null;
+            applyCustom = data.customUrl   || null;
+            break;
+          }
+        }
+      }
+    } catch (e) { console.warn('[sxPlayStream] profile lookup failed:', e); }
 
-    // 3. Flash-highlight so the user sees it update
-    urlIn.style.transition = 'box-shadow 0.15s, border-color 0.15s';
-    urlIn.style.borderColor = 'var(--acc)';
-    urlIn.style.boxShadow   = '0 0 0 3px var(--glow)';
-    setTimeout(() => { urlIn.style.borderColor = ''; urlIn.style.boxShadow = ''; }, 1400);
+    // ── APPLY PROFILE SETTINGS ────────────────────────────────────────
+    if (applyMode) {
+      const modeEl = document.getElementById('mpProxyMode');
+      if (modeEl) { modeEl.value = applyMode; onProxyModeChange(); }
+      localStorage.setItem('megaplayer_proxy_mode', applyMode);
+    }
+    if (applyFmt) {
+      const fmtEl = document.getElementById('mpProxyFormat');
+      if (fmtEl) fmtEl.value = applyFmt;
+    }
+    if (applyCustom) {
+      const custEl = document.getElementById('mpCustomProxyUrl');
+      if (custEl) custEl.value = applyCustom;
+      mpCurrentCustomProxyUrl = applyCustom;
+    }
 
-    // 4. Scroll into view & focus
-    urlIn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    urlIn.focus();
-  }
+    // ── OPEN & POPULATE THE PANEL ─────────────────────────────────────
+    // 1. Force-open the panel
+    const panel = document.getElementById('mpPanel');
+    if (panel && !panel.open) panel.open = true;
 
-  // 5. Pre-fill header fields (always clear if empty, so stale values don't persist)
-  const refIn  = document.getElementById('mpRefIn');
-  const origIn = document.getElementById('mpOrigIn');
-  if (refIn)  refIn.value  = referer;
-  if (origIn) origIn.value = origin;
+    // 2. Write the real stream URL into the main input
+    const urlIn = document.getElementById('mpUrlIn');
+    if (urlIn) {
+      urlIn.value = streamUrl;
+      // Trigger badge update
+      urlIn.dispatchEvent(new Event('input'));
+      // Flash highlight so the user sees the URL appear
+      urlIn.style.transition = 'box-shadow 0.2s, border-color 0.2s';
+      urlIn.style.borderColor = 'var(--acc)';
+      urlIn.style.boxShadow   = '0 0 0 4px var(--glow)';
+      setTimeout(() => { urlIn.style.borderColor = ''; urlIn.style.boxShadow = ''; }, 1500);
+      // Scroll to input & focus it
+      urlIn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      urlIn.focus();
+    }
 
-  // 6. Play — pass raw streamUrl so loadStream handles proxy internally
-  loadStream(streamUrl, referer, origin, { autoplay: true, exposeUrl: true });
+    // 3. Write referer/origin fields (always overwrite so stale values don't bleed)
+    const refIn  = document.getElementById('mpRefIn');
+    const origIn = document.getElementById('mpOrigIn');
+    if (refIn)  refIn.value  = applyRef;
+    if (origIn) origIn.value = applyOrigin;
 
-  toast(`Playing ${label} (${streamType?.toUpperCase()||'stream'})`, '🎬', 2500);
+    // ── PLAY ──────────────────────────────────────────────────────────
+    // Call loadStream directly (not loadFromInput) so we can pass the
+    // resolved referer/origin even when header fields might be empty.
+    loadStream(streamUrl, applyRef, applyOrigin, { autoplay: true, exposeUrl: true });
+
+    toast(
+      `Playing ${label} (${streamType?.toUpperCase() || 'stream'})` +
+      (applyMode && applyMode !== 'direct' ? ` via ${applyMode}` : ''),
+      '🎬', 2500
+    );
+  })();
 }
-
 function sxSetActiveBtn(btnId) {
   document.querySelectorAll('.sx-btn.on').forEach(b => b.classList.remove('on'));
   const btn = document.getElementById(btnId);
