@@ -281,7 +281,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
   .mp-panel-sub{display:none}
 }
 
-/* ─── STREAM EXTRACTOR (inside MegaPlayer panel) ─── */
+/* ─── STREAM EXTRACTOR (inside panel) ─── */
 .sx-wrap{margin:14px 0;border:1px solid var(--bordera);border-radius:var(--rl);overflow:hidden;background:rgba(99,77,255,.04)}
 .sx-header{display:flex;align-items:center;gap:10px;padding:11px 14px;background:rgba(99,77,255,.06);border-bottom:1px solid rgba(99,77,255,.1);flex-wrap:wrap}
 .sx-title-row{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
@@ -452,7 +452,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
   </div>
 </div>
 
-<!-- UNIFIED WATCH VIEW — Anime + Movies/TV — one MegaPlayer -->
+<!-- UNIFIED WATCH VIEW — Anime + Movies/TV -->
 <div class="view" id="v-watch">
   <div class="wrap">
     <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back to Home</button>
@@ -573,11 +573,10 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
             <div class="srvcats" id="srvcats"></div>
           </div>
 
-          <!-- ═══ UNIFIED MEGAPLAYER PANEL ═══ -->
+          <!-- ═══ UNIFIED PANEL ═══ -->
           <details class="mp-panel" id="mpPanel" open>
             <summary>
               <i class="fas fa-sliders"></i>
-              MegaPlayer
               <span class="mp-panel-sub" id="mpPanelSub">Stream Extractor · HLS proxy · headers · saved rules</span>
             </summary>
             <div class="mp-panel-body">
@@ -844,7 +843,7 @@ async function playHianimeServer(type, serverGroup) {
     const headers = await mpResolveStreamHeaders(source.url, source.embedUrl);
     await loadStream(source.url, headers.ref, headers.origin, { label, fallbackUrl: source.embedUrl, fallbackSandbox: iframeSandbox });
     document.getElementById('wep-lbl').textContent = label + ' · Native HLS';
-    toast(`Hianime ${type.toUpperCase()} ${serverGroup} loaded in MegaPlayer`, '🌸');
+    toast(`Hianime ${type.toUpperCase()} ${serverGroup} loaded`, '🌸');
   } else {
     showIframeMode(source.url, { sandbox: iframeSandbox, label });
     document.getElementById('wep-lbl').textContent = label;
@@ -2085,7 +2084,7 @@ async function filterGenre(gid,btn){
 
 document.getElementById('sinput').addEventListener('keypress',e=>{ if(e.key==='Enter') doSearch(); });
 
-// ─── STREAM EXTRACTOR — inside MegaPlayer panel ───────────────────────
+// ─── STREAM EXTRACTOR — inside panel ───────────────────────
 let SX = { running:false, results:[], embedUrls:[], activeBtn:null };
 
 function sxApiBase() { return ''; }
