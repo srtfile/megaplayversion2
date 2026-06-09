@@ -136,36 +136,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 .vid-ratio{position:relative;width:100%;padding-bottom:56.25%;background:#000}
 .vid-ratio iframe,.vid-ratio video{position:absolute;inset:0;width:100%;height:100%;border:none;background:#000}
 
-/* ─── MEGAPLAYER ─── */
-.mp-vwrap{overflow:hidden;isolation:isolate}
-.mp-vwrap .mp-video{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:contain;background:#000}
-.mp-vwrap .mp-iframe-wrap{position:absolute;inset:0;display:none;background:#000}
-.mp-vwrap .mp-iframe-wrap iframe{width:100%;height:100%;border:none;display:block;background:#000}
-.mp-vwrap.video-mode .mp-video{display:block}
-.mp-vwrap.iframe-mode .mp-video{display:none}
-.mp-vwrap.iframe-mode .mp-iframe-wrap{display:block}
-.mp-iframe-badge{position:absolute;top:10px;left:10px;z-index:12;background:rgba(99,77,255,.88);color:#fff;font-size:10px;font-weight:800;letter-spacing:1px;padding:4px 10px;border-radius:99px;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.35)}
-.mp-center-state{position:absolute;inset:0;display:none;align-items:center;justify-content:center;gap:12px;z-index:20;background:rgba(5,5,15,.55);color:var(--muted);font-size:13px;pointer-events:none}
-.mp-center-state.on{display:flex}
-.mp-overlay{position:absolute;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(transparent,rgba(0,0,0,.93));padding:42px 14px 12px;opacity:0;pointer-events:none;transition:opacity var(--tr)}
-.mp-vwrap:hover .mp-overlay,.mp-vwrap.paused .mp-overlay,.mp-vwrap.controls-on .mp-overlay{opacity:1;pointer-events:auto}
-.mp-vwrap.iframe-mode .mp-overlay{display:none}
-.mp-seek{position:relative;height:5px;background:rgba(255,255,255,.2);border-radius:99px;cursor:pointer;margin-bottom:11px;transition:height var(--tr)}
-.mp-seek:hover{height:7px}
-.mp-seek-buf,.mp-seek-prog{position:absolute;top:0;left:0;height:100%;border-radius:99px;pointer-events:none}
-.mp-seek-buf{background:rgba(255,255,255,.26)}
-.mp-seek-prog{background:linear-gradient(90deg,var(--acc),var(--acc2))}
-.mp-seek-thumb{position:absolute;top:50%;width:14px;height:14px;background:#fff;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity var(--tr);box-shadow:0 2px 8px rgba(0,0,0,.45)}
-.mp-seek:hover .mp-seek-thumb{opacity:1}
-.mp-crow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.mp-cb{background:none;border:none;color:#fff;cursor:pointer;font-size:14px;padding:6px 8px;border-radius:7px;line-height:1;transition:background var(--tr),transform var(--tr);white-space:nowrap;font-family:'DM Sans',sans-serif}
-.mp-cb:hover{background:rgba(255,255,255,.15);transform:translateY(-1px)}
-.mp-time{font-size:12px;color:rgba(255,255,255,.85);white-space:nowrap;font-family:'JetBrains Mono',monospace}
-.mp-spacer{flex:1}
-.mp-select{background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;padding:5px 7px;border-radius:7px;cursor:pointer;outline:none;font-family:'DM Sans',sans-serif}
-.mp-select:focus{border-color:var(--acc)}
-.mp-volume{width:68px;accent-color:var(--acc);cursor:pointer}
-
 /* ─── AUTO-NEXT ─── */
 .autonext-overlay{position:absolute;bottom:80px;right:16px;z-index:60;background:rgba(5,5,15,.95);backdrop-filter:blur(12px);border:1px solid var(--bordera);border-radius:14px;padding:16px 18px;display:none;flex-direction:column;align-items:flex-end;gap:10px;min-width:210px;box-shadow:0 8px 40px rgba(99,77,255,.25)}
 .autonext-overlay.on{display:flex;animation:anSlideIn .35s cubic-bezier(.34,1.56,.64,1)}
@@ -183,13 +153,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 .an-btn-cancel:hover{color:var(--text);border-color:var(--bordera)}
 
 /* ─── EP ENDED BAR ─── */
-.ep-ended-bar{background:var(--bg2);border-top:2px solid var(--acc);padding:13px 18px;display:none;align-items:center;gap:12px;flex-wrap:wrap}
-.ep-ended-bar.on{display:flex}
-.ep-ended-txt{font-weight:700;font-size:14px;flex:1}
-.ep-ended-btn{padding:8px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:none;background:linear-gradient(135deg,var(--acc),#9070ff);color:#fff;display:flex;align-items:center;gap:6px;transition:all var(--tr);white-space:nowrap}
-.ep-ended-btn:hover{transform:scale(1.04)}
-.ep-ended-dismiss{padding:8px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all var(--tr)}
-.ep-ended-dismiss:hover{color:var(--text);border-color:var(--bordera)}
 
 /* ─── PLAYER CONTROLS BAR ─── */
 .player-ctrl-bar{background:var(--bg2);border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -231,55 +194,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 .epbtn.on{background:linear-gradient(135deg,rgba(99,77,255,.28),rgba(140,110,255,.14));border-color:var(--acc);color:#fff;box-shadow:0 0 16px var(--glow)}
 .season-sel{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;outline:none}
 .season-sel:focus{border-color:var(--acc)}
-
-/* ─── MEGAPLAYER PANEL ─── */
-.mp-panel{background:var(--bg2);border-top:1px solid var(--border)}
-.mp-panel summary{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;color:var(--text);font-weight:800;font-size:13px}
-.mp-panel summary::-webkit-details-marker{display:none}
-.mp-panel summary::after{content:'+';margin-left:auto;color:var(--acc);font-family:'JetBrains Mono',monospace;font-size:18px;line-height:1}
-.mp-panel[open] summary::after{content:'-'}
-.mp-panel-sub{font-size:11px;color:var(--muted);font-weight:600;font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mp-panel-body{padding:0 16px 14px;border-top:1px solid var(--border)}
-.mp-url-labelrow{display:flex;align-items:center;gap:8px;margin:12px 0 6px;flex-wrap:wrap}
-.mp-label{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase}
-.mp-row,.mp-proxy-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px}
-.mp-row>div,.mp-proxy-row>div{flex:1;min-width:160px}
-.mp-input,.mp-select-wide{width:100%;background:var(--bg1);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;font-family:'DM Sans',sans-serif;transition:border-color var(--tr),box-shadow var(--tr)}
-.mp-input:focus,.mp-select-wide:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--glow)}
-.mp-btn{background:var(--acc);border:none;color:#fff;padding:8px 15px;border-radius:8px;cursor:pointer;font-weight:800;font-size:13px;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:opacity var(--tr),transform var(--tr)}
-.mp-btn:hover{opacity:.9;transform:translateY(-1px)}
-.mp-btn.sec{background:var(--card);border:1px solid var(--border);color:var(--text)}
-.mp-btn.sec:hover{border-color:var(--bordera);color:var(--acc)}
-.mp-iopt{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);cursor:pointer;padding:5px 9px;border-radius:7px;border:1px solid var(--border);background:var(--bg1);transition:border-color var(--tr),color var(--tr),background var(--tr);user-select:none;white-space:nowrap;margin-left:auto}
-.mp-iopt input{display:none}
-.mp-iopt:hover{border-color:var(--bordera);color:var(--text)}
-.mp-iopt.active{border-color:var(--acc);color:var(--acc);background:rgba(99,77,255,.13)}
-.mp-iopt-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background var(--tr)}
-.mp-iopt.active .mp-iopt-dot{background:var(--acc)}
-.mp-url-badge{display:none;font-size:10px;font-weight:800;letter-spacing:.6px;padding:4px 9px;border-radius:99px;border:1px solid var(--border);background:var(--bg1);color:var(--muted)}
-#mpCustomExtra{display:none}
-.mp-statusrow{display:flex;gap:8px;align-items:center;margin-top:3px;flex-wrap:wrap}
-.mp-status{font-size:12px;color:var(--muted);flex:1;min-height:18px;overflow:hidden;text-overflow:ellipsis}
-.mp-rules-wrap{margin-top:10px;border-top:1px solid var(--border);padding-top:10px}
-.mp-rules-title{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
-#mpSavedRules{max-height:120px;overflow-y:auto}
-.mp-rule-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
-.mp-rule-item:last-child{border-bottom:none}
-.mp-rule-info{flex:1;min-width:0}
-.mp-rule-host{font-size:12px;color:var(--text);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mp-rule-ref{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mp-rule-del{background:none;border:1px solid var(--border);color:#ff6b6b;padding:3px 8px;border-radius:6px;cursor:pointer;font-size:11px;flex-shrink:0}
-@media(max-width:600px){
-  .mp-overlay{padding:34px 10px 10px}
-  .mp-crow{gap:4px}
-  .mp-cb{font-size:13px;padding:5px 6px}
-  .mp-time{font-size:11px}
-  .mp-volume{width:58px}
-  .mp-select{font-size:11px;padding:4px 5px}
-  .mp-panel-body{padding:0 12px 12px}
-  .mp-row>div,.mp-proxy-row>div{min-width:100%}
-  .mp-panel-sub{display:none}
-}
 
 /* ─── STREAM EXTRACTOR (inside panel) ─── */
 .sx-wrap{margin:14px 0;border:1px solid var(--bordera);border-radius:var(--rl);overflow:hidden;background:rgba(99,77,255,.04)}
@@ -469,9 +383,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 
           <!-- Video / Iframe container -->
           <div class="vid-ratio mp-vwrap paused iframe-mode" id="mpVwrap">
-            <video id="mpVid" class="mp-video" preload="metadata" playsinline></video>
             <div class="mp-iframe-wrap" id="mpIframeWrap">
-              <div class="mp-iframe-badge">IFRAME</div>
               <iframe id="vplayer"
                 allowfullscreen
                 referrerpolicy="strict-origin-when-cross-origin"
@@ -482,33 +394,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
             <div class="mp-center-state" id="mpLoading">
               <div class="spin"></div>
               <span id="mpLoadingText">Loading stream...</span>
-            </div>
-            <div class="mp-overlay" id="mpOverlay">
-              <div class="mp-seek" id="mpSeek">
-                <div class="mp-seek-buf" id="mpSbuf" style="width:0"></div>
-                <div class="mp-seek-prog" id="mpSprog" style="width:0"></div>
-                <div class="mp-seek-thumb" id="mpSthumb" style="left:0"></div>
-              </div>
-              <div class="mp-crow">
-                <button class="mp-cb" id="mpBplay" title="Play / Pause"><i class="fas fa-play"></i></button>
-                <button class="mp-cb" id="mpBback" title="-10s"><i class="fas fa-backward"></i></button>
-                <button class="mp-cb" id="mpBfwd" title="+10s"><i class="fas fa-forward"></i></button>
-                <button class="mp-cb" id="mpBmute" title="Mute"><i class="fas fa-volume-high"></i></button>
-                <input class="mp-volume" type="range" id="mpVol" min="0" max="1" step="0.05" value="1" aria-label="Volume">
-                <span class="mp-time" id="mpTdisp">0:00 / 0:00</span>
-                <div class="mp-spacer"></div>
-                <select class="mp-select" id="mpSpeed" aria-label="Speed">
-                  <option value=".5">.5x</option>
-                  <option value=".75">.75x</option>
-                  <option value="1" selected>1x</option>
-                  <option value="1.25">1.25x</option>
-                  <option value="1.5">1.5x</option>
-                  <option value="2">2x</option>
-                </select>
-                <select class="mp-select" id="mpQual" aria-label="Quality"><option value="-1">Auto</option></select>
-                <button class="mp-cb" id="mpBpip" title="Picture in Picture"><i class="fas fa-clone"></i></button>
-                <button class="mp-cb" id="mpBfs" title="Fullscreen"><i class="fas fa-expand"></i></button>
-              </div>
             </div>
             <!-- Auto-next overlay -->
             <div class="autonext-overlay" id="autonextOverlay">
@@ -541,31 +426,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
             </div>
           </div>
 
-          <!-- Ep ended bar -->
-          <div class="ep-ended-bar" id="epEndedBar">
-            <span class="ep-ended-txt" id="epEndedTxt">Episode finished</span>
-            <button class="ep-ended-btn" id="epEndedNextBtn" onclick="playNextEpNow()"><i class="fas fa-play"></i> Next Episode</button>
-            <button class="ep-ended-dismiss" onclick="dismissEndedBar()">Dismiss</button>
-          </div>
 
-          <!-- Player controls -->
-          <div class="player-ctrl-bar" id="animeCtrlBar">
-            <div class="ctrl-group">
-              <button class="ctoggle" id="autoplayToggle" onclick="toggleAutoplay()">
-                <span class="ticon"><i class="fas fa-circle-play"></i></span>
-                <span>Autoplay</span>
-                <span class="tswitch"></span>
-              </button>
-            </div>
-            <div class="ctrl-divider"></div>
-            <div class="ctrl-group">
-              <button class="ctoggle" id="autonextToggle" onclick="toggleAutonext()">
-                <span class="ticon"><i class="fas fa-forward-step"></i></span>
-                <span>Auto Next</span>
-                <span class="tswitch"></span>
-              </button>
-            </div>
-          </div>
 
           <!-- Server tabs -->
           <div class="srvbar">
@@ -574,13 +435,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
           </div>
 
           <!-- ═══ UNIFIED PANEL ═══ -->
-          <details class="mp-panel" id="mpPanel" open>
-            <summary>
-              <i class="fas fa-sliders"></i>
-              <span class="mp-panel-sub" id="mpPanelSub">Stream Extractor · HLS proxy · headers · saved rules</span>
-            </summary>
-            <div class="mp-panel-body">
-
               <!-- ① STREAM EXTRACTOR — top of panel -->
               <div class="sx-wrap" id="sx-wrap">
                 <div class="sx-header">
@@ -606,77 +460,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
                 </div>
               </div>
 
-              <!-- ② STREAM URL INPUT -->
-              <div class="mp-url-labelrow">
-                <div class="mp-label">Stream URL</div>
-                <span class="mp-url-badge" id="mpUrlTypeBadge"></span>
-                <label class="mp-iopt" id="mpOptSandbox" title="Enable strict iframe sandbox">
-                  <input type="checkbox" id="mpChkSandbox" onchange="onSandboxChange()">
-                  <span class="mp-iopt-dot"></span>
-                  <i class="fas fa-shield-halved"></i> Sandbox
-                </label>
-              </div>
-              <div class="mp-row">
-                <input class="mp-input" id="mpUrlIn" type="text" placeholder="Paste m3u8, mp4, or embed URL">
-                <button class="mp-btn" onclick="loadFromInput()"><i class="fas fa-play"></i> Play</button>
-              </div>
-
-              <!-- ③ REFERER / ORIGIN -->
-              <div class="mp-row">
-                <div>
-                  <div class="mp-label">Referer</div>
-                  <input class="mp-input" id="mpRefIn" type="text" placeholder="Optional referer header">
-                </div>
-                <div>
-                  <div class="mp-label">Origin</div>
-                  <input class="mp-input" id="mpOrigIn" type="text" placeholder="Optional origin header">
-                </div>
-              </div>
-
-              <!-- ④ PROXY MODE -->
-              <div class="mp-proxy-row">
-                <div>
-                  <div class="mp-label">Proxy Mode</div>
-                  <select class="mp-select-wide" id="mpProxyMode" onchange="onProxyModeChange()">
-                    <option value="local">Local Proxy (/proxy)</option>
-                    <option value="custom">Custom Proxy</option>
-                    <option value="direct">Direct</option>
-                  </select>
-                </div>
-              </div>
-              <div id="mpCustomExtra">
-                <div class="mp-row">
-                  <div style="flex:2;min-width:180px">
-                    <div class="mp-label">Custom Proxy Base URL</div>
-                    <input class="mp-input" id="mpCustomProxyUrl" type="text" placeholder="Custom proxy base URL">
-                  </div>
-                  <div>
-                    <div class="mp-label">Format</div>
-                    <select class="mp-select-wide" id="mpProxyFormat">
-                      <option value="foxy">foxy-doxy (?url=B64&amp;headers=B64)</option>
-                      <option value="plain">Plain (?url=ENC&amp;referer=ENC)</option>
-                      <option value="cors">CORS-anywhere (prepend)</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ⑤ STATUS + SAVE RULE -->
-              <div class="mp-statusrow">
-                <div class="mp-status" id="mpStatus">Ready — Hianime m3u8 streams will use the selected proxy.</div>
-                <button class="mp-btn sec" onclick="saveCurrentRule()" title="Save Referer, Origin, and proxy mode for this CDN">
-                  <i class="fas fa-floppy-disk"></i> Save Rule
-                </button>
-              </div>
-
-              <!-- ⑥ SAVED RULES -->
-              <div class="mp-rules-wrap">
-                <div class="mp-rules-title">Saved Rules <span id="mpRulesCount" style="color:var(--acc)"></span></div>
-                <div id="mpSavedRules"></div>
-              </div>
-            </div>
-          </details>
-        </div>
 
         <div class="noticebar">
           <i class="fas fa-circle-info"></i>
@@ -840,9 +623,8 @@ async function playHianimeServer(type, serverGroup) {
   const source = getHianimeSource(data, CUR.ep, type, serverGroup);
   if (!source?.url) { toast(`Hianime ${type.toUpperCase()} ${serverGroup} — not available for Ep ${CUR.ep}`, '⚠️'); document.getElementById('wep-lbl').textContent = label + ' · Not available'; return; }
   if (isHlsUrl(source.url)) {
-    const headers = await mpResolveStreamHeaders(source.url, source.embedUrl);
-    await loadStream(source.url, headers.ref, headers.origin, { label, fallbackUrl: source.embedUrl, fallbackSandbox: iframeSandbox });
-    document.getElementById('wep-lbl').textContent = label + ' · Native HLS';
+    openHlsLayer(source.url, label);
+    document.getElementById('wep-lbl').textContent = label + ' · HLS';
     toast(`Hianime ${type.toUpperCase()} ${serverGroup} loaded`, '🌸');
   } else {
     showIframeMode(source.url, { sandbox: iframeSandbox, label });
@@ -903,440 +685,22 @@ async function playVidWishRealid(srvId) {
   highlightEpBtn(CUR.ep);
   toast(`${srv.label} loaded (realid: ${realid})`, '🎬');
 }
-function restoreIframePlayer() {
-  const iframe = document.getElementById('vplayer');
-  if (iframe) showIframeMode('about:blank', { sandbox: 'permissive' });
-}
-
-// ─── MEGAPLAYER CONSTANTS & DOM REFS ─────────────────────────────────
+// ─── IFRAME PLAYER HELPERS ───────────────────────────────────────────
 const MP_PERMISSIVE_IFRAME_SANDBOX = 'allow-scripts allow-same-origin allow-forms allow-presentation allow-popups allow-popups-to-escape-sandbox';
-const MP_STRICT_IFRAME_SANDBOX = 'allow-scripts allow-same-origin allow-forms allow-presentation allow-pointer-lock';
-const MP_RULES_KEY = 'megaplayer_url_rules';
-
-const mpVid = document.getElementById('mpVid');
-const mpVwrap = document.getElementById('mpVwrap');
-const mpIframePlayer = document.getElementById('vplayer');
-const mpSeek = document.getElementById('mpSeek');
-const mpSbuf = document.getElementById('mpSbuf');
-const mpSprog = document.getElementById('mpSprog');
-const mpSthumb = document.getElementById('mpSthumb');
-const mpBplay = document.getElementById('mpBplay');
-const mpBmute = document.getElementById('mpBmute');
-const mpVol = document.getElementById('mpVol');
-const mpTdisp = document.getElementById('mpTdisp');
-const mpQual = document.getElementById('mpQual');
-const mpSpeed = document.getElementById('mpSpeed');
-const mpStatusEl = document.getElementById('mpStatus');
-const mpPanelSub = document.getElementById('mpPanelSub');
-const mpLoading = document.getElementById('mpLoading');
-const mpLoadingText = document.getElementById('mpLoadingText');
-
-let mpHls = null;
-let mpScrub = false;
-let mpReady = false;
-let mpMode = 'iframe';
-let mpIframeSandboxMode = 'permissive';
-let mpProfileCache = null;
-let mpCurrentStreamUrl = '';
-let mpCurrentRef = '';
-let mpCurrentOrigin = '';
-let mpCurrentCustomProxyUrl = '';
-
-const MP_KNOWN_RULES = [
-  { cdn:['cdn.mewstream.buzz','mewstream.buzz','voltara.click','lostproject.club'], ref:'https://megaplay.buzz/', origin:'https://megaplay.buzz', label:'MegaPlay' },
-  { cdn:['gogocdn.net','cdn.gogocdn.net','gogoanime'], ref:'https://gogoanime.me.uk/', origin:'https://gogoanime.me.uk', label:'GogoAnime' },
-  { cdn:['megacloud.tv','rapid-cloud.co','megacloud.store'], ref:'https://aniwatch.to/', origin:'https://aniwatch.to', label:'AniWatch/Zoro' },
-  { cdn:['9anime','vidstream','mcloud.to'], ref:'https://9anime.to/', origin:'https://9anime.to', label:'9Anime' },
-  { cdn:['crunchyroll.com','vrv.co'], ref:'https://www.crunchyroll.com/', origin:'https://www.crunchyroll.com', label:'Crunchyroll' },
-  { cdn:['streamtape.com','streamtape.net'], ref:'https://streamtape.com/', origin:'https://streamtape.com', label:'Streamtape' },
-  { cdn:['dood.','doodstream.com','ds2play.com'], ref:'https://doodstream.com/', origin:'https://doodstream.com', label:'DoodStream' },
-  { cdn:['filemoon.sx','filemoon.in'], ref:'https://filemoon.sx/', origin:'https://filemoon.sx', label:'FileMoon' },
-  { cdn:['vizcloud','vidcloud','mcloud'], ref:'https://vidcloud.co/', origin:'https://vidcloud.co', label:'VidCloud' }
-];
-
-async function mpLoadUserRules() {
-  if (mpProfileCache) return mpProfileCache;
-  try { const r = await fetch('/api/profiles'); if (r.ok) { mpProfileCache = await r.json(); return mpProfileCache; } } catch {}
-  try { return JSON.parse(localStorage.getItem(MP_RULES_KEY) || '{}'); } catch { return {}; }
-}
-async function mpSaveUserRule(host, ref, origin, proxyMode, proxyFmt, customUrl) {
-  const body = { host, ref, origin, proxyMode:proxyMode||'', proxyFmt:proxyFmt||'', customUrl:customUrl||'' };
-  try {
-    const r = await fetch('/api/profiles', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
-    if (r.ok) { mpProfileCache = null; await renderSavedRules(); return; }
-  } catch {}
-  const data = await mpLoadUserRules();
-  data[host] = { ref, origin, proxyMode:proxyMode||'', proxyFmt:proxyFmt||'', customUrl:customUrl||'', saved:new Date().toISOString() };
-  localStorage.setItem(MP_RULES_KEY, JSON.stringify(data));
-  mpProfileCache = data;
-  await renderSavedRules(data);
-}
-async function mpDeleteUserRule(host) {
-  try { await fetch(`/api/profiles/${encodeURIComponent(host)}`, { method:'DELETE' }); mpProfileCache = null; } catch {
-    const data = await mpLoadUserRules(); delete data[host]; localStorage.setItem(MP_RULES_KEY, JSON.stringify(data)); mpProfileCache = data;
-  }
-  await renderSavedRules();
-}
-async function mpDetectHeaders(url) {
-  if (!url) return null;
-  let host = '';
-  try { host = new URL(url).hostname.toLowerCase(); } catch { return null; }
-  for (const rule of MP_KNOWN_RULES) {
-    if (rule.cdn.some(c => host.includes(c))) return { ref:rule.ref, origin:rule.origin, label:rule.label, source:'built-in', proxyMode:'', proxyFmt:'', customUrl:'' };
-  }
-  const saved = await mpLoadUserRules();
-  for (const [savedHost, data] of Object.entries(saved)) {
-    if (host.includes(savedHost.toLowerCase())) return { ref:data.ref||'', origin:data.origin||'', label:savedHost, source:'saved', proxyMode:data.proxyMode||'', proxyFmt:data.proxyFmt||'', customUrl:data.customUrl||'' };
-  }
-  try { const u = new URL(url); return { ref:u.origin+'/', origin:u.origin, label:host, source:'auto', proxyMode:'', proxyFmt:'', customUrl:'' }; } catch { return null; }
-}
-async function mpResolveStreamHeaders(url, fallbackUrl) {
-  const detected = await mpDetectHeaders(url);
-  let ref = detected?.ref || '';
-  let origin = detected?.origin || '';
-  if (fallbackUrl && (!detected || detected.source === 'auto')) {
-    try { const embed = new URL(fallbackUrl); ref = embed.href; origin = embed.origin; } catch {}
-  }
-  return { ref, origin, detected };
-}
-function detectUrlType(url) {
-  if (!url) return null;
-  const u = url.split('?')[0].toLowerCase();
-  if (u.endsWith('.m3u8') || u.includes('.m3u8')) return 'hls';
-  if (u.endsWith('.txt')) return 'txt';
-  if (u.endsWith('.webm')) return 'webm';
-  if (u.endsWith('.ts')) return 'ts';
-  if (/\.(mp4|mov|mkv|avi|flv|ogg)$/.test(u)) return 'mp4';
-  return 'iframe';
-}
-const MP_URL_TYPES = {
-  hls:{ label:'HLS', color:'#4ade80', border:'#4ade80' }, txt:{ label:'HLS TXT', color:'#4ade80', border:'#4ade80' },
-  mp4:{ label:'MP4', color:'#60a5fa', border:'#60a5fa' }, webm:{ label:'WEBM', color:'#60a5fa', border:'#60a5fa' },
-  ts:{ label:'TS', color:'#60a5fa', border:'#60a5fa' }, iframe:{ label:'IFRAME', color:'#a78bfa', border:'#7c5cfc' }
-};
-function showUrlTypeBadge(url) {
-  const badge = document.getElementById('mpUrlTypeBadge');
-  if (!badge) return;
-  if (!url) { badge.style.display = 'none'; return; }
-  const type = detectUrlType(url);
-  const meta = MP_URL_TYPES[type] || MP_URL_TYPES.iframe;
-  badge.textContent = meta.label;
-  badge.style.color = meta.color;
-  badge.style.borderColor = meta.border;
-  badge.style.background = meta.color + '18';
-  badge.style.display = 'inline-flex';
-}
-async function mpApplyUrlFields(url, ref, origin, options={}) {
-  const urlIn = document.getElementById('mpUrlIn');
-  const refIn = document.getElementById('mpRefIn');
-  const origIn = document.getElementById('mpOrigIn');
-  mpCurrentStreamUrl = url || '';
-  if (urlIn && options.exposeUrl) urlIn.value = url || '';
-  if (urlIn && options.clearUrl) urlIn.value = '';
-  showUrlTypeBadge((options.showBadge||options.exposeUrl) ? url : '');
-  let finalRef = ref || '';
-  let finalOrigin = origin || '';
-  const detected = await mpDetectHeaders(url);
-  if (!finalRef && detected?.ref) finalRef = detected.ref;
-  if (!finalOrigin && detected?.origin) finalOrigin = detected.origin;
-  mpCurrentRef = finalRef;
-  mpCurrentOrigin = finalOrigin;
-  if (detected?.source === 'saved') {
-    if (detected.proxyMode) { document.getElementById('mpProxyMode').value = detected.proxyMode; onProxyModeChange(); }
-    if (detected.proxyFmt && document.getElementById('mpProxyFormat')) document.getElementById('mpProxyFormat').value = detected.proxyFmt;
-    if (detected.customUrl) mpCurrentCustomProxyUrl = detected.customUrl;
-  }
-  if (refIn && options.clearHeaders) refIn.value = '';
-  if (origIn && options.clearHeaders) origIn.value = '';
-  if (refIn && options.exposeHeaders) refIn.value = finalRef;
-  if (origIn && options.exposeHeaders) origIn.value = finalOrigin;
-  return { ref:finalRef, origin:finalOrigin, detected };
-}
-function onProxyModeChange() {
-  const mode = document.getElementById('mpProxyMode')?.value || 'local';
-  const custom = document.getElementById('mpCustomExtra');
-  if (custom) custom.style.display = mode === 'custom' ? 'block' : 'none';
-}
-function mpEncodeB64(value) {
-  return btoa(unescape(encodeURIComponent(value))).replace(/\+/g,'%2B').replace(/=/g,'%3D');
-}
-function buildSrc(m3u8, ref, orig) {
-  const mode = document.getElementById('mpProxyMode')?.value || 'local';
-  ref = ref || ''; orig = orig || '';
-  if (mode === 'local') return `/proxy?url=${encodeURIComponent(m3u8)}&ref=${encodeURIComponent(ref)}&origin=${encodeURIComponent(orig)}`;
-  if (mode === 'custom') {
-    const base = (document.getElementById('mpCustomProxyUrl')?.value || mpCurrentCustomProxyUrl || '').trim().replace(/\/$/,'');
-    const format = document.getElementById('mpProxyFormat')?.value || 'foxy';
-    if (!base) return m3u8;
-    if (format === 'foxy') {
-      const headers = {...(ref && {Referer:ref}), ...(orig && {Origin:orig})};
-      return `${base}?url=${mpEncodeB64(m3u8)}&headers=${mpEncodeB64(JSON.stringify(headers))}`;
-    }
-    if (format === 'plain') { let q=`${base}?url=${encodeURIComponent(m3u8)}`; if(ref) q+=`&referer=${encodeURIComponent(ref)}`; if(orig) q+=`&origin=${encodeURIComponent(orig)}`; return q; }
-    if (format === 'cors') return `${base}/${m3u8}`;
-  }
-  return m3u8;
-}
 function isHlsUrl(url) {
   if (!url) return false;
   const u = url.split('?')[0].toLowerCase();
   return u.endsWith('.m3u8') || u.includes('.m3u8') || u.endsWith('.txt');
 }
-function isDirectVideo(url) {
-  if (!url) return false;
-  const u = url.split('?')[0].toLowerCase();
-  return /\.(mp4|webm|ogg|mov|mkv|avi|flv|ts)$/.test(u);
-}
-function isIframeUrl(url) { return !isHlsUrl(url) && !isDirectVideo(url); }
-function onSandboxChange() {
-  const on = !!document.getElementById('mpChkSandbox')?.checked;
-  document.getElementById('mpOptSandbox')?.classList.toggle('active', on);
-  localStorage.setItem('megaplayer_opt_sandbox', on ? '1' : '0');
-  if (mpMode === 'iframe' && mpIframeSandboxMode === 'panel') mpApplyIframeOptions();
-}
-function mpApplyIframeOptions() {
-  if (!mpIframePlayer) return;
-  if (mpIframeSandboxMode === false) { mpIframePlayer.removeAttribute('sandbox'); return; }
-  if (mpIframeSandboxMode === 'permissive') { mpIframePlayer.setAttribute('sandbox', MP_PERMISSIVE_IFRAME_SANDBOX); return; }
-  if (document.getElementById('mpChkSandbox')?.checked) mpIframePlayer.setAttribute('sandbox', MP_STRICT_IFRAME_SANDBOX);
-  else mpIframePlayer.removeAttribute('sandbox');
-}
-function mpDestroyHls() { if (mpHls) { try { mpHls.destroy(); } catch {} mpHls = null; } }
-function mpResetNativeVideo() { if (!mpVid) return; mpVid.pause(); mpVid.removeAttribute('src'); try { mpVid.load(); } catch {} }
-function mpResetProgress() {
-  if (mpSbuf) mpSbuf.style.width = '0';
-  if (mpSprog) mpSprog.style.width = '0';
-  if (mpSthumb) mpSthumb.style.left = '0';
-  if (mpTdisp) mpTdisp.textContent = '0:00 / 0:00';
-  if (mpQual) mpQual.innerHTML = '<option value="-1">Auto</option>';
-}
-function mpSetLoading(on, text) {
-  if (!mpLoading) return;
-  if (text && mpLoadingText) mpLoadingText.textContent = text;
-  mpLoading.classList.toggle('on', !!on);
-}
-function showVideoMode(label) {
-  mpDestroyHls(); mpMode = 'video'; mpIframeSandboxMode = 'panel';
-  if (mpIframePlayer) mpIframePlayer.src = 'about:blank';
-  mpVwrap?.classList.remove('iframe-mode');
-  mpVwrap?.classList.add('video-mode','paused');
-  mpResetProgress();
-  if (mpPanelSub && label) mpPanelSub.textContent = label;
-}
 function showIframeMode(src, options={}) {
-  mpDestroyHls(); mpResetNativeVideo(); mpSetLoading(false);
-  mpMode = 'iframe';
-  mpIframeSandboxMode = Object.prototype.hasOwnProperty.call(options, 'sandbox') ? options.sandbox : 'panel';
-  mpVwrap?.classList.remove('video-mode','paused','controls-on');
-  mpVwrap?.classList.add('iframe-mode');
-  mpApplyIframeOptions();
-  if (mpIframePlayer && typeof src === 'string') mpIframePlayer.src = src;
-  if (src && src !== 'about:blank') mpCurrentStreamUrl = src;
-  const label = options.label || (src && src !== 'about:blank' ? src : 'Stream Extractor · HLS proxy · headers · saved rules');
-  if (mpPanelSub) mpPanelSub.textContent = label;
-  if (src && src !== 'about:blank') {
-    if (options.exposeUrl === true) { const urlIn = document.getElementById('mpUrlIn'); if (urlIn) urlIn.value = src; showUrlTypeBadge(src); }
-    setStatus('Iframe mode — native controls are hidden for embed players.', 'var(--acc3)');
-  }
+  const iframe = document.getElementById('vplayer');
+  const sub = document.getElementById('mpPanelSub');
+  if (iframe && typeof src === 'string') iframe.src = src;
+  if (sub && options.label && src !== 'about:blank') sub.textContent = options.label;
 }
-function mpTryPlay(options={}) {
-  if (options.autoplay === false) return;
-  mpVid?.play().catch(() => { mpVwrap?.classList.add('paused'); setStatus('Ready — press play to start.', 'var(--muted)'); });
-}
-function mpUseIframeFallback(fallbackUrl, fallbackSandbox, label) {
-  if (!fallbackUrl) return false;
-  showIframeMode(fallbackUrl, { sandbox:fallbackSandbox ?? 'permissive', label, exposeUrl:false });
-  setStatus('Native HLS failed — opened the embed fallback.', 'var(--orange)');
-  toast('Opened embed fallback', '↩️', 2600);
-  return true;
-}
-async function loadStream(streamUrl, ref='', orig='', options={}) {
-  if (!streamUrl) { setStatus('Paste a stream URL first.', 'var(--red)'); return false; }
-  const exposeUrl = options.exposeUrl === true;
-  const fields = await mpApplyUrlFields(streamUrl, ref, orig, { exposeUrl, showBadge:exposeUrl, clearUrl:!exposeUrl, clearHeaders:!exposeUrl });
-  ref = fields.ref; orig = fields.origin;
-  mpDestroyHls(); mpResetProgress(); mpSetLoading(false);
-  const mode = document.getElementById('mpProxyMode')?.value || 'local';
-  const modeLabel = mode === 'local' ? 'local proxy' : mode === 'custom' ? 'custom proxy' : 'direct';
-  const src = buildSrc(streamUrl, ref, orig);
-  if (isIframeUrl(streamUrl)) { showIframeMode(streamUrl, { sandbox:options.fallbackSandbox??'panel', label:options.label, exposeUrl }); setStatus('Opening in iframe mode.', 'var(--acc3)'); return true; }
-  showVideoMode(options.label || streamUrl);
-  setStatus(`Connecting via ${modeLabel}...`, 'var(--acc3)');
-  mpSetLoading(true, 'Connecting stream...');
-  let fallbackUsed = false;
-  const fallback = () => { if (fallbackUsed) return false; fallbackUsed = true; return mpUseIframeFallback(options.fallbackUrl, options.fallbackSandbox, options.label); };
-  if (isDirectVideo(streamUrl)) {
-    mpVid.src = src; mpVid.load();
-    mpVid.onloadedmetadata = () => { mpSetLoading(false); setStatus(`Playing direct video via ${modeLabel}.`, 'var(--green)'); };
-    mpVid.onerror = () => { mpSetLoading(false); if (!fallback()) setStatus('Could not load video — try a different proxy mode.', 'var(--red)'); };
-    mpTryPlay(options); return true;
-  }
-  if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-    mpHls = new Hls({ enableWorker:true, lowLatencyMode:false });
-    mpHls.loadSource(src); mpHls.attachMedia(mpVid);
-    mpHls.on(Hls.Events.MANIFEST_PARSED, (_, data) => {
-      mpSetLoading(false);
-      setStatus(`Playing HLS — ${data.levels.length} quality level(s) via ${modeLabel}.`, 'var(--green)');
-      data.levels.forEach((level, index) => {
-        const opt = document.createElement('option');
-        opt.value = index;
-        opt.textContent = level.height ? `${level.height}p` : `Level ${index}`;
-        mpQual?.appendChild(opt);
-      });
-      mpTryPlay(options);
-    });
-    mpHls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => { const level = mpHls?.levels?.[data.level]; if (level) setStatus(`${level.height ? level.height + 'p' : 'Auto'} — ${Math.round((level.bitrate||0)/1000)}kbps via ${modeLabel}.`, 'var(--muted)'); });
-    mpHls.on(Hls.Events.ERROR, (_, data) => { if (!data.fatal) return; if (data.type === Hls.ErrorTypes.MEDIA_ERROR) { mpHls.recoverMediaError(); return; } mpSetLoading(false); if (!fallback()) setStatus(`${data.details || 'HLS error'} — try a different proxy mode.`, 'var(--red)'); });
-    return true;
-  }
-  if (mpVid?.canPlayType('application/vnd.apple.mpegurl')) {
-    mpVid.src = src; mpVid.onloadedmetadata = () => { mpSetLoading(false); setStatus(`Playing native HLS via ${modeLabel}.`, 'var(--green)'); };
-    mpVid.onerror = () => { mpSetLoading(false); if (!fallback()) setStatus('Native HLS failed — try a different proxy mode.', 'var(--red)'); };
-    mpTryPlay(options); return true;
-  }
-  mpSetLoading(false);
-  if (!fallback()) setStatus('HLS is not supported in this browser.', 'var(--red)');
-  return false;
-}
-function loadFromInput() {
-  const url = document.getElementById('mpUrlIn')?.value.trim() || '';
-  const ref = document.getElementById('mpRefIn')?.value.trim() || '';
-  const orig = document.getElementById('mpOrigIn')?.value.trim() || '';
-  loadStream(url, ref, orig, { autoplay:true, exposeUrl:true });
-}
-async function saveCurrentRule() {
-  const url = document.getElementById('mpUrlIn')?.value.trim() || mpCurrentStreamUrl;
-  const ref = document.getElementById('mpRefIn')?.value.trim() || mpCurrentRef;
-  const origin = document.getElementById('mpOrigIn')?.value.trim() || mpCurrentOrigin;
-  const proxyMode = document.getElementById('mpProxyMode')?.value || 'local';
-  const proxyFmt = document.getElementById('mpProxyFormat')?.value || 'foxy';
-  const customUrl = document.getElementById('mpCustomProxyUrl')?.value.trim() || '';
-  if (!url) { setStatus('Paste a URL before saving a rule.', 'var(--red)'); return; }
-  let host = '';
-  try { host = new URL(url).hostname; } catch { setStatus('Invalid URL.', 'var(--red)'); return; }
-  await mpSaveUserRule(host, ref, origin, proxyMode, proxyFmt, customUrl);
-  localStorage.setItem('megaplayer_proxy_mode', proxyMode);
-  localStorage.setItem('megaplayer_proxy_fmt', proxyFmt);
-  localStorage.setItem('megaplayer_proxy_custom_url', customUrl);
-  setStatus(`Saved rule for ${host}.`, 'var(--green)');
-}
-async function renderSavedRules(data) {
-  data = data || await mpLoadUserRules();
-  const el = document.getElementById('mpSavedRules');
-  const count = document.getElementById('mpRulesCount');
-  if (!el) return;
-  const entries = Object.entries(data);
-  if (count) count.textContent = entries.length ? `(${entries.length})` : '';
-  el.innerHTML = '';
-  if (!entries.length) { const empty = document.createElement('div'); empty.className = 'mp-rule-ref'; empty.textContent = 'No saved rules yet. Play a URL, then save the CDN rule.'; el.appendChild(empty); return; }
-  entries.forEach(([host, rule]) => {
-    const item = document.createElement('div'); item.className = 'mp-rule-item';
-    const info = document.createElement('div'); info.className = 'mp-rule-info';
-    const hostEl = document.createElement('div'); hostEl.className = 'mp-rule-host'; hostEl.textContent = `${host}${rule.proxyMode ? ' [' + rule.proxyMode + ']' : ''}`;
-    const refEl = document.createElement('div'); refEl.className = 'mp-rule-ref'; refEl.textContent = rule.ref || 'no referer';
-    const del = document.createElement('button'); del.className = 'mp-rule-del'; del.type = 'button'; del.textContent = 'Delete';
-    del.addEventListener('click', () => mpDeleteUserRule(host));
-    info.appendChild(hostEl); info.appendChild(refEl);
-    item.appendChild(info); item.appendChild(del);
-    el.appendChild(item);
-  });
-}
-function mpFormatTime(seconds) {
-  if (!seconds || isNaN(seconds) || !isFinite(seconds)) return '0:00';
-  const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = Math.floor(seconds%60);
-  return h > 0 ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${m}:${String(s).padStart(2,'0')}`;
-}
-function setStatus(msg, color='var(--muted)') { if (mpStatusEl) { mpStatusEl.textContent = msg; mpStatusEl.style.color = color; } }
-function mpUpdatePlayIcon() { if (!mpBplay) return; mpBplay.innerHTML = mpVid?.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>'; }
-function mpUpdateMuteIcon() { if (!mpBmute) return; const muted = mpVid?.muted || Number(mpVid?.volume) === 0; mpBmute.innerHTML = muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-high"></i>'; }
-function mpSeekTo(clientX) {
-  if (!mpSeek || !mpVid?.duration) return;
-  const rect = mpSeek.getBoundingClientRect();
-  const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-  mpVid.currentTime = pct * mpVid.duration;
-}
-async function onUrlInput() {
-  const url = document.getElementById('mpUrlIn')?.value.trim() || '';
-  showUrlTypeBadge(url);
-  if (!url) return;
-  const type = detectUrlType(url);
-  if (type === 'iframe') { setStatus('Embed URL detected — it will open in iframe mode.', 'var(--acc3)'); return; }
-  const fields = await mpApplyUrlFields(url, document.getElementById('mpRefIn')?.value.trim(), document.getElementById('mpOrigIn')?.value.trim(), { showBadge:true });
-  if (fields.detected?.source === 'saved') setStatus(`Saved rule applied: ${fields.detected.label}.`, 'var(--acc3)');
-  else if (fields.detected?.source === 'built-in') setStatus(`Header profile: ${fields.detected.label}.`, 'var(--acc3)');
-}
-async function initMegaPlayer() {
-  if (mpReady || !mpVid) return;
-  mpReady = true;
-  const savedMode = localStorage.getItem('megaplayer_proxy_mode');
-  const savedFmt = localStorage.getItem('megaplayer_proxy_fmt');
-  const savedCustom = localStorage.getItem('megaplayer_proxy_custom_url');
-  if (savedMode && document.getElementById('mpProxyMode')) document.getElementById('mpProxyMode').value = savedMode;
-  if (savedFmt && document.getElementById('mpProxyFormat')) document.getElementById('mpProxyFormat').value = savedFmt;
-  if (savedCustom) mpCurrentCustomProxyUrl = savedCustom;
-  onProxyModeChange();
-  const sandboxOn = localStorage.getItem('megaplayer_opt_sandbox') === '1';
-  if (document.getElementById('mpChkSandbox')) document.getElementById('mpChkSandbox').checked = sandboxOn;
-  document.getElementById('mpOptSandbox')?.classList.toggle('active', sandboxOn);
-  const savedPanelState = localStorage.getItem('megaplayer_panel_open');
-  if (savedPanelState && document.getElementById('mpPanel')) document.getElementById('mpPanel').open = savedPanelState === '1';
-  document.getElementById('mpPanel')?.addEventListener('toggle', e => { localStorage.setItem('megaplayer_panel_open', e.currentTarget.open ? '1' : '0'); });
-  mpBplay?.addEventListener('click', () => mpVid.paused ? mpVid.play() : mpVid.pause());
-  document.getElementById('mpBback')?.addEventListener('click', () => { if (mpVid.duration) mpVid.currentTime = Math.max(0, mpVid.currentTime - 10); });
-  document.getElementById('mpBfwd')?.addEventListener('click', () => { if (mpVid.duration) mpVid.currentTime = Math.min(mpVid.duration, mpVid.currentTime + 10); });
-  mpBmute?.addEventListener('click', () => { mpVid.muted = !mpVid.muted; mpUpdateMuteIcon(); });
-  mpVol?.addEventListener('input', () => { mpVid.volume = parseFloat(mpVol.value); mpVid.muted = mpVid.volume === 0; mpUpdateMuteIcon(); });
-  mpSpeed?.addEventListener('change', () => { mpVid.playbackRate = parseFloat(mpSpeed.value); });
-  mpQual?.addEventListener('change', () => { if (mpHls) mpHls.currentLevel = parseInt(mpQual.value, 10); });
-  document.getElementById('mpBpip')?.addEventListener('click', () => {
-    if (!document.pictureInPictureEnabled || mpMode !== 'video') return;
-    if (document.pictureInPictureElement) document.exitPictureInPicture().catch(()=>{});
-    else mpVid.requestPictureInPicture().catch(()=>{});
-  });
-  document.getElementById('mpBfs')?.addEventListener('click', () => {
-    if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
-    else mpVwrap?.requestFullscreen().catch(()=>{});
-  });
-  mpVid.addEventListener('play', () => { mpVwrap?.classList.remove('paused'); mpUpdatePlayIcon(); });
-  mpVid.addEventListener('pause', () => { mpVwrap?.classList.add('paused'); mpUpdatePlayIcon(); });
-  mpVid.addEventListener('waiting', () => mpSetLoading(true, 'Buffering...'));
-  mpVid.addEventListener('canplay', () => mpSetLoading(false));
-  mpVid.addEventListener('ended', () => { if (mpMode === 'video' && WATCH_MODE === 'anime') onEpisodeEnded(); });
-  mpVid.addEventListener('timeupdate', () => {
-    if (!mpVid.duration || mpScrub) return;
-    const pct = mpVid.currentTime / mpVid.duration;
-    if (mpSprog) mpSprog.style.width = `${pct*100}%`;
-    if (mpSthumb) mpSthumb.style.left = `${pct*100}%`;
-    if (mpTdisp) mpTdisp.textContent = `${mpFormatTime(mpVid.currentTime)} / ${mpFormatTime(mpVid.duration)}`;
-  });
-  mpVid.addEventListener('progress', () => {
-    if (!mpVid.buffered.length || !mpVid.duration || !mpSbuf) return;
-    const end = mpVid.buffered.end(mpVid.buffered.length - 1);
-    mpSbuf.style.width = `${Math.min(100,(end/mpVid.duration)*100)}%`;
-  });
-  mpSeek?.addEventListener('mousedown', e => { mpScrub = true; mpSeekTo(e.clientX); });
-  document.addEventListener('mousemove', e => { if (mpScrub) mpSeekTo(e.clientX); });
-  document.addEventListener('mouseup', () => { mpScrub = false; });
-  mpSeek?.addEventListener('touchstart', e => { mpScrub = true; mpSeekTo(e.touches[0].clientX); }, { passive:true });
-  document.addEventListener('touchmove', e => { if (mpScrub) mpSeekTo(e.touches[0].clientX); }, { passive:true });
-  document.addEventListener('touchend', () => { mpScrub = false; });
-  document.addEventListener('keydown', e => {
-    if (!document.getElementById('v-watch')?.classList.contains('on') || mpMode !== 'video') return;
-    if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
-    if (e.key === ' ' || e.key.toLowerCase() === 'k') { e.preventDefault(); mpVid.paused ? mpVid.play() : mpVid.pause(); }
-    if (e.key === 'ArrowRight') mpVid.currentTime = Math.min(mpVid.duration||Infinity, mpVid.currentTime + 10);
-    if (e.key === 'ArrowLeft') mpVid.currentTime = Math.max(0, mpVid.currentTime - 10);
-    if (e.key === 'ArrowUp') { e.preventDefault(); mpVid.volume = Math.min(1, mpVid.volume + .1); mpVol.value = mpVid.volume; mpUpdateMuteIcon(); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); mpVid.volume = Math.max(0, mpVid.volume - .1); mpVol.value = mpVid.volume; mpUpdateMuteIcon(); }
-    if (e.key.toLowerCase() === 'm') { mpVid.muted = !mpVid.muted; mpUpdateMuteIcon(); }
-    if (e.key.toLowerCase() === 'f') document.getElementById('mpBfs')?.click();
-  });
-  document.getElementById('mpUrlIn')?.addEventListener('input', onUrlInput);
-  document.getElementById('mpUrlIn')?.addEventListener('paste', () => setTimeout(onUrlInput, 50));
-  mpUpdatePlayIcon(); mpUpdateMuteIcon();
-  showIframeMode('about:blank', { sandbox:'permissive' });
-  await renderSavedRules();
-  setStatus('Ready — Hianime m3u8 streams will use the selected proxy.', 'var(--muted)');
+function restoreIframePlayer() {
+  const iframe = document.getElementById('vplayer');
+  if (iframe) showIframeMode('about:blank', { sandbox: 'permissive' });
 }
 
 // ─── INLINE HLS LAYER (replaces rive-hls-layer + separate TMDB player) ─
@@ -1596,7 +960,6 @@ async function openTmdbContent(r){
   showView('v-watch');
 
   // Configure UI for TMDB mode
-  document.getElementById('animeCtrlBar').style.display = 'none'; // hide anime-only controls
   document.getElementById('autonextOverlay').classList.remove('on');
 
   const srvcats = document.getElementById('srvcats');
@@ -1740,7 +1103,6 @@ async function openAnime(a){
   showView('v-watch');
 
   // Show anime-specific controls
-  document.getElementById('animeCtrlBar').style.display = '';
   document.getElementById('eppanel').style.display = 'block';
   document.getElementById('tw-season-sel').style.display = 'none';
 
@@ -2258,7 +1620,6 @@ function sxSetActiveBtn(btnId) {
 
 // ─── INIT ─────────────────────────────────────────────────────────────
 async function init(){
-  await initMegaPlayer();
   updateToggle('autoplayToggle',SETTINGS.autoplay);
   updateToggle('autonextToggle',SETTINGS.autonext);
   await loadHero();
