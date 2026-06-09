@@ -531,7 +531,35 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 <!-- Server tabs -->
 <div class="srvbar">
 <span class="srvlbl">Servers</span>
-<div class="srvcats" id="srvcats"></div>
+<div class="srvcats" id="srvcats">
+              <div class="srvside"><div class="srvsidelbl dub"><i class="fas fa-volume-up" style="margin-right:5px"></i>DUB</div>
+                <button class="srvtab dub-tab on" data-srvid="mp-mal-dub"><span class="dot"></span>🇺🇸 MegaPlay DUB</button>
+                <button class="srvtab dub-tab" data-srvid="kiwi-dub"><span class="dot"></span>🥝 Kiwi DUB</button>
+                <button class="srvtab dub-tab" data-srvid="vw-rid-dub"><span class="dot"></span>🔊 VidWish DUB</button>
+                <button class="srvtab dub-tab" data-srvid="mp-al-dub"><span class="dot"></span>🇺🇸 AniList DUB</button>
+                <button class="srvtab dub-tab" data-srvid="hianime-dub-HD-1"><span class="dot"></span>🌸 HD-1 DUB</button>
+                <button class="srvtab dub-tab" data-srvid="hianime-dub-HD-2"><span class="dot"></span>🌸 HD-2 DUB</button>
+                <button class="srvtab dub-tab" data-srvid="hianime-dub-StreamHG"><span class="dot"></span>🌸 StreamHG DUB</button>
+                <button class="srvtab dub-tab" data-srvid="hianime-dub-Earnvids"><span class="dot"></span>🌸 Earnvids DUB</button>
+              </div>
+              <div class="srvside"><div class="srvsidelbl sub"><i class="fas fa-closed-captioning" style="margin-right:5px"></i>SUB</div>
+                <button class="srvtab sub-tab" data-srvid="mp-mal-sub"><span class="dot"></span>🎌 MegaPlay SUB</button>
+                <button class="srvtab sub-tab" data-srvid="kiwi-sub"><span class="dot"></span>🥝 Kiwi SUB</button>
+                <button class="srvtab sub-tab" data-srvid="vw-rid-sub"><span class="dot"></span>📺 VidWish SUB</button>
+                <button class="srvtab sub-tab" data-srvid="mp-al-sub"><span class="dot"></span>🎌 AniList SUB</button>
+                <button class="srvtab sub-tab" data-srvid="hianime-sub-HD-1"><span class="dot"></span>🌸 HD-1 SUB</button>
+                <button class="srvtab sub-tab" data-srvid="hianime-sub-HD-2"><span class="dot"></span>🌸 HD-2 SUB</button>
+                <button class="srvtab sub-tab" data-srvid="hianime-sub-StreamHG"><span class="dot"></span>🌸 StreamHG SUB</button>
+                <button class="srvtab sub-tab" data-srvid="hianime-sub-Earnvids"><span class="dot"></span>🌸 Earnvids SUB</button>
+              </div>
+              <div class="srvside"><div class="srvsidelbl" style="color:#22c55e;border-color:rgba(34,197,94,.3)"><i class="fas fa-language" style="margin-right:5px"></i>HSUB</div>
+                <button class="srvtab" data-srvid="hianime-hsub-HD-1" style="border-color:rgba(34,197,94,.3)"><span class="dot"></span>🌸 HD-1 HSUB</button>
+                <button class="srvtab" data-srvid="hianime-hsub-HD-2" style="border-color:rgba(34,197,94,.3)"><span class="dot"></span>🌸 HD-2 HSUB</button>
+                <button class="srvtab" data-srvid="hianime-hsub-StreamHG" style="border-color:rgba(34,197,94,.3)"><span class="dot"></span>🌸 StreamHG HSUB</button>
+                <button class="srvtab" data-srvid="hianime-hsub-Earnvids" style="border-color:rgba(34,197,94,.3)"><span class="dot"></span>🌸 Earnvids HSUB</button>
+                <button class="srvtab" data-srvid="hianime-hsub-Doodstream" style="border-color:rgba(34,197,94,.3)"><span class="dot"></span>🌸 Doodstream HSUB</button>
+              </div>
+            </div>
 </div>
 <!-- ═══ UNIFIED MEGAPLAYER PANEL ═══ -->
 <details class="mp-panel" id="mpPanel" open="">
@@ -1313,15 +1341,8 @@ async function openTmdbContent(r){
   document.getElementById('animeCtrlBar').style.display = 'none'; // hide anime-only controls
   document.getElementById('autonextOverlay').classList.remove('on');
 
-  const srvcats = document.getElementById('srvcats');
-  srvcats.innerHTML = '';
-
-  // TMDB no longer uses MegaPlayer. Keep the same player shell and let Stream Extractor provide playable URLs.
-  const info = document.createElement('div');
-  info.className = 'srvside';
-  info.innerHTML = `<div class="srvsidelbl"><i class="fas fa-bolt" style="margin-right:5px"></i>PLAYER</div>
-    <button class="srvtab on" type="button"><span class="dot"></span>Stream Extractor</button>`;
-  srvcats.appendChild(info);
+  // Keep the full DUB / SUB / HSUB server list visible everywhere the pasted player shell is used.
+  buildServerTabs();
 
   renderTmdbWatchInfo(r);
 
@@ -1580,75 +1601,66 @@ async function buildEpGrid(a){
 
 function buildServerTabs(){
   const el=document.getElementById('srvcats'); el.innerHTML='';
+  const makeBtn = (srv, extraClass, targetSide, onClick, active=false, extraStyle='') => {
+    const btn=document.createElement('button');
+    btn.className='srvtab '+extraClass+(active?' on':'');
+    btn.dataset.srvid=srv.id;
+    if (extraStyle) btn.style.cssText += extraStyle;
+    btn.innerHTML=`<span class="dot"></span>${srv.icon} ${srv.label}`;
+    btn.onclick=onClick;
+    targetSide.appendChild(btn);
+    return btn;
+  };
+
   const dubSide=document.createElement('div'); dubSide.className='srvside';
   const dubLbl=document.createElement('div'); dubLbl.className='srvsidelbl dub'; dubLbl.innerHTML='<i class="fas fa-volume-up" style="margin-right:5px"></i>DUB'; dubSide.appendChild(dubLbl);
   const subSide=document.createElement('div'); subSide.className='srvside';
   const subLbl=document.createElement('div'); subLbl.className='srvsidelbl sub'; subLbl.innerHTML='<i class="fas fa-closed-captioning" style="margin-right:5px"></i>SUB'; subSide.appendChild(subLbl);
   const hsubSide=document.createElement('div'); hsubSide.className='srvside';
   const hsubLbl=document.createElement('div'); hsubLbl.className='srvsidelbl'; hsubLbl.innerHTML='<i class="fas fa-language" style="margin-right:5px"></i>HSUB'; hsubLbl.style.color='#22c55e'; hsubLbl.style.borderColor='rgba(34,197,94,.3)'; hsubSide.appendChild(hsubLbl);
-  MAL_SERVERS.forEach(s=>{
-    const isDub=s.id.includes('dub');
-    const btn=document.createElement('button');
-    btn.className='srvtab '+(isDub?'dub-tab':'sub-tab')+(s.id===DEFAULT_SRV?' on':'');
-    btn.dataset.srvid=s.id;
-    btn.innerHTML=`<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=s.id; endedHandledForEp=-1; playCurrentEp(); };
-    (isDub?dubSide:subSide).appendChild(btn);
-  });
-  KIWI_SERVERS.forEach(s=>{
-    const isDub=s.type==='dub';
-    const btn=document.createElement('button');
-    btn.className='srvtab '+(isDub?'dub-tab':'sub-tab');
-    btn.dataset.srvid=s.id;
-    btn.innerHTML=`<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=s.id; endedHandledForEp=-1; playCurrentEp(); };
-    (isDub?dubSide:subSide).appendChild(btn);
-  });
-  VIDWISH_REALID_SERVERS.forEach(s=>{
-    const isDub=s.type==='dub';
-    const btn=document.createElement('button');
-    btn.className='srvtab '+(isDub?'dub-tab':'sub-tab');
-    btn.dataset.srvid=s.id;
-    btn.innerHTML=`<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=s.id; endedHandledForEp=-1; playCurrentEp(); };
-    (isDub?dubSide:subSide).appendChild(btn);
-  });
+
+  // Exact order requested: MegaPlay, Kiwi, VidWish, AniList, then Hianime hosts.
+  makeBtn(MAL_SERVERS.find(s=>s.id==='mp-mal-dub'), 'dub-tab', dubSide,
+    ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector('[data-srvid="mp-mal-dub"]')?.classList.add('on'); CUR.srvId='mp-mal-dub'; endedHandledForEp=-1; playCurrentEp(); }, CUR.srvId==='mp-mal-dub' || !CUR.srvId);
+  makeBtn(KIWI_SERVERS.find(s=>s.id==='kiwi-dub'), 'dub-tab', dubSide,
+    ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector('[data-srvid="kiwi-dub"]')?.classList.add('on'); CUR.srvId='kiwi-dub'; endedHandledForEp=-1; playCurrentEp(); });
+  makeBtn(VIDWISH_REALID_SERVERS.find(s=>s.id==='vw-rid-dub'), 'dub-tab', dubSide,
+    ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector('[data-srvid="vw-rid-dub"]')?.classList.add('on'); CUR.srvId='vw-rid-dub'; endedHandledForEp=-1; playCurrentEp(); });
+  makeBtn(AL_SERVERS.find(s=>s.id==='mp-al-dub'), 'dub-tab', dubSide,
+    ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector('[data-srvid="mp-al-dub"]')?.classList.add('on'); CUR.srvId='mp-al-dub'; endedHandledForEp=-1; playCurrentEp(); });
   HIANIME_DUB_SERVERS.forEach(srv => {
-    const btn=document.createElement('button'); btn.className='srvtab dub-tab'; btn.dataset.srvid=`hianime-dub-${srv}`;
-    btn.innerHTML=`<span class="dot"></span>🌸 ${srv} DUB`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=`hianime-dub-${srv}`; HIANIME_CUR_DUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); };
-    dubSide.appendChild(btn);
+    makeBtn({id:`hianime-dub-${srv}`, icon:'🌸', label:`${srv} DUB`}, 'dub-tab', dubSide,
+      ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector(`[data-srvid="hianime-dub-${srv}"]`)?.classList.add('on'); CUR.srvId=`hianime-dub-${srv}`; HIANIME_CUR_DUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); });
   });
+
+  makeBtn(MAL_SERVERS.find(s=>s.id==='mp-mal-sub'), 'sub-tab', subSide,
+    ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector('[data-srvid="mp-mal-sub"]')?.classList.add('on'); CUR.srvId='mp-mal-sub'; endedHandledForEp=-1; playCurrentEp(); });
+  makeBtn(KIWI_SERVERS.find(s=>s.id==='kiwi-sub'), 'sub-tab', subSide,
+    ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector('[data-srvid="kiwi-sub"]')?.classList.add('on'); CUR.srvId='kiwi-sub'; endedHandledForEp=-1; playCurrentEp(); });
+  makeBtn(VIDWISH_REALID_SERVERS.find(s=>s.id==='vw-rid-sub'), 'sub-tab', subSide,
+    ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector('[data-srvid="vw-rid-sub"]')?.classList.add('on'); CUR.srvId='vw-rid-sub'; endedHandledForEp=-1; playCurrentEp(); });
+  makeBtn(AL_SERVERS.find(s=>s.id==='mp-al-sub'), 'sub-tab', subSide,
+    ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector('[data-srvid="mp-al-sub"]')?.classList.add('on'); CUR.srvId='mp-al-sub'; endedHandledForEp=-1; playCurrentEp(); });
   HIANIME_SUB_SERVERS.forEach(srv => {
-    const btn=document.createElement('button'); btn.className='srvtab sub-tab'; btn.dataset.srvid=`hianime-sub-${srv}`;
-    btn.innerHTML=`<span class="dot"></span>🌸 ${srv} SUB`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=`hianime-sub-${srv}`; HIANIME_CUR_SUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); };
-    subSide.appendChild(btn);
+    makeBtn({id:`hianime-sub-${srv}`, icon:'🌸', label:`${srv} SUB`}, 'sub-tab', subSide,
+      ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector(`[data-srvid="hianime-sub-${srv}"]`)?.classList.add('on'); CUR.srvId=`hianime-sub-${srv}`; HIANIME_CUR_SUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); });
   });
+
   HIANIME_HSUB_SERVERS.forEach(srv => {
-    const btn=document.createElement('button'); btn.className='srvtab'; btn.dataset.srvid=`hianime-hsub-${srv}`;
-    btn.innerHTML=`<span class="dot"></span>🌸 ${srv} HSUB`; btn.style.borderColor='rgba(34,197,94,.3)';
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=`hianime-hsub-${srv}`; HIANIME_CUR_HSUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); };
-    hsubSide.appendChild(btn);
+    makeBtn({id:`hianime-hsub-${srv}`, icon:'🌸', label:`${srv} HSUB`}, '', hsubSide,
+      ()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); document.querySelector(`[data-srvid="hianime-hsub-${srv}"]`)?.classList.add('on'); CUR.srvId=`hianime-hsub-${srv}`; HIANIME_CUR_HSUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); }, false, 'border-color:rgba(34,197,94,.3)');
   });
+
   el.appendChild(dubSide);
   el.appendChild(subSide);
   el.appendChild(hsubSide);
 }
 
 function appendAnilistTabs(alId){
-  const el=document.getElementById('srvcats');
-  const sides=el.querySelectorAll('.srvside');
-  const dubSide=sides[0], subSide=sides[1];
-  AL_SERVERS.forEach(s=>{
-    const isDub=s.id.includes('dub');
-    const btn=document.createElement('button');
-    btn.className='srvtab '+(isDub?'dub-tab':'sub-tab');
-    btn.innerHTML=`<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=s.id; endedHandledForEp=-1; playCurrentEp(); };
-    const side = isDub ? dubSide : subSide;
-    const firstHianime = Array.from(side.querySelectorAll('.srvtab')).find(b => b.innerHTML.includes('🌸'));
-    if (firstHianime) side.insertBefore(btn, firstHianime); else side.appendChild(btn);
+  // AniList buttons are already present to preserve the exact requested server list.
+  // This function keeps them wired once the AniList ID is resolved.
+  document.querySelectorAll('[data-srvid="mp-al-dub"],[data-srvid="mp-al-sub"]').forEach(btn=>{
+    btn.title = `AniList ID ${alId}`;
   });
 }
 
