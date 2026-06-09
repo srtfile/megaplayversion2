@@ -240,35 +240,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 .mp-panel[open] summary::after{content:'-'}
 .mp-panel-sub{font-size:11px;color:var(--muted);font-weight:600;font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mp-panel-body{padding:0 16px 14px;border-top:1px solid var(--border)}
-.mp-url-labelrow{display:flex;align-items:center;gap:8px;margin:12px 0 6px;flex-wrap:wrap}
-.mp-label{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase}
-.mp-row,.mp-proxy-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px}
-.mp-row>div,.mp-proxy-row>div{flex:1;min-width:160px}
-.mp-input,.mp-select-wide{width:100%;background:var(--bg1);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;font-family:'DM Sans',sans-serif;transition:border-color var(--tr),box-shadow var(--tr)}
-.mp-input:focus,.mp-select-wide:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--glow)}
-.mp-btn{background:var(--acc);border:none;color:#fff;padding:8px 15px;border-radius:8px;cursor:pointer;font-weight:800;font-size:13px;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:opacity var(--tr),transform var(--tr)}
-.mp-btn:hover{opacity:.9;transform:translateY(-1px)}
-.mp-btn.sec{background:var(--card);border:1px solid var(--border);color:var(--text)}
-.mp-btn.sec:hover{border-color:var(--bordera);color:var(--acc)}
-.mp-iopt{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);cursor:pointer;padding:5px 9px;border-radius:7px;border:1px solid var(--border);background:var(--bg1);transition:border-color var(--tr),color var(--tr),background var(--tr);user-select:none;white-space:nowrap;margin-left:auto}
-.mp-iopt input{display:none}
-.mp-iopt:hover{border-color:var(--bordera);color:var(--text)}
-.mp-iopt.active{border-color:var(--acc);color:var(--acc);background:rgba(99,77,255,.13)}
-.mp-iopt-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background var(--tr)}
-.mp-iopt.active .mp-iopt-dot{background:var(--acc)}
-.mp-url-badge{display:none;font-size:10px;font-weight:800;letter-spacing:.6px;padding:4px 9px;border-radius:99px;border:1px solid var(--border);background:var(--bg1);color:var(--muted)}
-#mpCustomExtra{display:none}
-.mp-statusrow{display:flex;gap:8px;align-items:center;margin-top:3px;flex-wrap:wrap}
-.mp-status{font-size:12px;color:var(--muted);flex:1;min-height:18px;overflow:hidden;text-overflow:ellipsis}
-.mp-rules-wrap{margin-top:10px;border-top:1px solid var(--border);padding-top:10px}
-.mp-rules-title{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
-#mpSavedRules{max-height:120px;overflow-y:auto}
-.mp-rule-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
-.mp-rule-item:last-child{border-bottom:none}
-.mp-rule-info{flex:1;min-width:0}
-.mp-rule-host{font-size:12px;color:var(--text);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mp-rule-ref{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mp-rule-del{background:none;border:1px solid var(--border);color:#ff6b6b;padding:3px 8px;border-radius:6px;cursor:pointer;font-size:11px;flex-shrink:0}
 @media(max-width:600px){
   .mp-overlay{padding:34px 10px 10px}
   .mp-crow{gap:4px}
@@ -277,7 +248,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
   .mp-volume{width:58px}
   .mp-select{font-size:11px;padding:4px 5px}
   .mp-panel-body{padding:0 12px 12px}
-  .mp-row>div,.mp-proxy-row>div{min-width:100%}
   .mp-panel-sub{display:none}
 }
 
@@ -578,7 +548,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
             <summary>
               <i class="fas fa-sliders"></i>
               MegaPlayer
-              <span class="mp-panel-sub" id="mpPanelSub">Stream Extractor · HLS proxy · headers · saved rules</span>
+              <span class="mp-panel-sub" id="mpPanelSub">Stream Extractor</span>
             </summary>
             <div class="mp-panel-body">
 
@@ -605,75 +575,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
                     <span>Extracts HLS/MP4 URLs and iframe embeds from all pipeline hosts.</span>
                   </div>
                 </div>
-              </div>
-
-              <!-- ② STREAM URL INPUT -->
-              <div class="mp-url-labelrow">
-                <div class="mp-label">Stream URL</div>
-                <span class="mp-url-badge" id="mpUrlTypeBadge"></span>
-                <label class="mp-iopt" id="mpOptSandbox" title="Enable strict iframe sandbox">
-                  <input type="checkbox" id="mpChkSandbox" onchange="onSandboxChange()">
-                  <span class="mp-iopt-dot"></span>
-                  <i class="fas fa-shield-halved"></i> Sandbox
-                </label>
-              </div>
-              <div class="mp-row">
-                <input class="mp-input" id="mpUrlIn" type="text" placeholder="Paste m3u8, mp4, or embed URL">
-                <button class="mp-btn" onclick="loadFromInput()"><i class="fas fa-play"></i> Play</button>
-              </div>
-
-              <!-- ③ REFERER / ORIGIN -->
-              <div class="mp-row">
-                <div>
-                  <div class="mp-label">Referer</div>
-                  <input class="mp-input" id="mpRefIn" type="text" placeholder="Optional referer header">
-                </div>
-                <div>
-                  <div class="mp-label">Origin</div>
-                  <input class="mp-input" id="mpOrigIn" type="text" placeholder="Optional origin header">
-                </div>
-              </div>
-
-              <!-- ④ PROXY MODE -->
-              <div class="mp-proxy-row">
-                <div>
-                  <div class="mp-label">Proxy Mode</div>
-                  <select class="mp-select-wide" id="mpProxyMode" onchange="onProxyModeChange()">
-                    <option value="local">Local Proxy (/proxy)</option>
-                    <option value="custom">Custom Proxy</option>
-                    <option value="direct">Direct</option>
-                  </select>
-                </div>
-              </div>
-              <div id="mpCustomExtra">
-                <div class="mp-row">
-                  <div style="flex:2;min-width:180px">
-                    <div class="mp-label">Custom Proxy Base URL</div>
-                    <input class="mp-input" id="mpCustomProxyUrl" type="text" placeholder="Custom proxy base URL">
-                  </div>
-                  <div>
-                    <div class="mp-label">Format</div>
-                    <select class="mp-select-wide" id="mpProxyFormat">
-                      <option value="foxy">foxy-doxy (?url=B64&amp;headers=B64)</option>
-                      <option value="plain">Plain (?url=ENC&amp;referer=ENC)</option>
-                      <option value="cors">CORS-anywhere (prepend)</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ⑤ STATUS + SAVE RULE -->
-              <div class="mp-statusrow">
-                <div class="mp-status" id="mpStatus">Ready — Hianime m3u8 streams will use the selected proxy.</div>
-                <button class="mp-btn sec" onclick="saveCurrentRule()" title="Save Referer, Origin, and proxy mode for this CDN">
-                  <i class="fas fa-floppy-disk"></i> Save Rule
-                </button>
-              </div>
-
-              <!-- ⑥ SAVED RULES -->
-              <div class="mp-rules-wrap">
-                <div class="mp-rules-title">Saved Rules <span id="mpRulesCount" style="color:var(--acc)"></span></div>
-                <div id="mpSavedRules"></div>
               </div>
             </div>
           </details>
@@ -911,8 +812,6 @@ function restoreIframePlayer() {
 
 // ─── MEGAPLAYER CONSTANTS & DOM REFS ─────────────────────────────────
 const MP_PERMISSIVE_IFRAME_SANDBOX = 'allow-scripts allow-same-origin allow-forms allow-presentation allow-popups allow-popups-to-escape-sandbox';
-const MP_STRICT_IFRAME_SANDBOX = 'allow-scripts allow-same-origin allow-forms allow-presentation allow-pointer-lock';
-const MP_RULES_KEY = 'megaplayer_url_rules';
 
 const mpVid = document.getElementById('mpVid');
 const mpVwrap = document.getElementById('mpVwrap');
@@ -927,7 +826,6 @@ const mpVol = document.getElementById('mpVol');
 const mpTdisp = document.getElementById('mpTdisp');
 const mpQual = document.getElementById('mpQual');
 const mpSpeed = document.getElementById('mpSpeed');
-const mpStatusEl = document.getElementById('mpStatus');
 const mpPanelSub = document.getElementById('mpPanelSub');
 const mpLoading = document.getElementById('mpLoading');
 const mpLoadingText = document.getElementById('mpLoadingText');
@@ -937,11 +835,7 @@ let mpScrub = false;
 let mpReady = false;
 let mpMode = 'iframe';
 let mpIframeSandboxMode = 'permissive';
-let mpProfileCache = null;
 let mpCurrentStreamUrl = '';
-let mpCurrentRef = '';
-let mpCurrentOrigin = '';
-let mpCurrentCustomProxyUrl = '';
 
 const MP_KNOWN_RULES = [
   { cdn:['cdn.mewstream.buzz','mewstream.buzz','voltara.click','lostproject.club'], ref:'https://megaplay.buzz/', origin:'https://megaplay.buzz', label:'MegaPlay' },
@@ -955,41 +849,14 @@ const MP_KNOWN_RULES = [
   { cdn:['vizcloud','vidcloud','mcloud'], ref:'https://vidcloud.co/', origin:'https://vidcloud.co', label:'VidCloud' }
 ];
 
-async function mpLoadUserRules() {
-  if (mpProfileCache) return mpProfileCache;
-  try { const r = await fetch('/api/profiles'); if (r.ok) { mpProfileCache = await r.json(); return mpProfileCache; } } catch {}
-  try { return JSON.parse(localStorage.getItem(MP_RULES_KEY) || '{}'); } catch { return {}; }
-}
-async function mpSaveUserRule(host, ref, origin, proxyMode, proxyFmt, customUrl) {
-  const body = { host, ref, origin, proxyMode:proxyMode||'', proxyFmt:proxyFmt||'', customUrl:customUrl||'' };
-  try {
-    const r = await fetch('/api/profiles', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
-    if (r.ok) { mpProfileCache = null; await renderSavedRules(); return; }
-  } catch {}
-  const data = await mpLoadUserRules();
-  data[host] = { ref, origin, proxyMode:proxyMode||'', proxyFmt:proxyFmt||'', customUrl:customUrl||'', saved:new Date().toISOString() };
-  localStorage.setItem(MP_RULES_KEY, JSON.stringify(data));
-  mpProfileCache = data;
-  await renderSavedRules(data);
-}
-async function mpDeleteUserRule(host) {
-  try { await fetch(`/api/profiles/${encodeURIComponent(host)}`, { method:'DELETE' }); mpProfileCache = null; } catch {
-    const data = await mpLoadUserRules(); delete data[host]; localStorage.setItem(MP_RULES_KEY, JSON.stringify(data)); mpProfileCache = data;
-  }
-  await renderSavedRules();
-}
 async function mpDetectHeaders(url) {
   if (!url) return null;
   let host = '';
   try { host = new URL(url).hostname.toLowerCase(); } catch { return null; }
   for (const rule of MP_KNOWN_RULES) {
-    if (rule.cdn.some(c => host.includes(c))) return { ref:rule.ref, origin:rule.origin, label:rule.label, source:'built-in', proxyMode:'', proxyFmt:'', customUrl:'' };
+    if (rule.cdn.some(c => host.includes(c))) return { ref:rule.ref, origin:rule.origin, label:rule.label, source:'built-in' };
   }
-  const saved = await mpLoadUserRules();
-  for (const [savedHost, data] of Object.entries(saved)) {
-    if (host.includes(savedHost.toLowerCase())) return { ref:data.ref||'', origin:data.origin||'', label:savedHost, source:'saved', proxyMode:data.proxyMode||'', proxyFmt:data.proxyFmt||'', customUrl:data.customUrl||'' };
-  }
-  try { const u = new URL(url); return { ref:u.origin+'/', origin:u.origin, label:host, source:'auto', proxyMode:'', proxyFmt:'', customUrl:'' }; } catch { return null; }
+  try { const u = new URL(url); return { ref:u.origin+'/', origin:u.origin, label:host, source:'auto' }; } catch { return null; }
 }
 async function mpResolveStreamHeaders(url, fallbackUrl) {
   const detected = await mpDetectHeaders(url);
@@ -1000,83 +867,20 @@ async function mpResolveStreamHeaders(url, fallbackUrl) {
   }
   return { ref, origin, detected };
 }
-function detectUrlType(url) {
-  if (!url) return null;
-  const u = url.split('?')[0].toLowerCase();
-  if (u.endsWith('.m3u8') || u.includes('.m3u8')) return 'hls';
-  if (u.endsWith('.txt')) return 'txt';
-  if (u.endsWith('.webm')) return 'webm';
-  if (u.endsWith('.ts')) return 'ts';
-  if (/\.(mp4|mov|mkv|avi|flv|ogg)$/.test(u)) return 'mp4';
-  return 'iframe';
-}
-const MP_URL_TYPES = {
-  hls:{ label:'HLS', color:'#4ade80', border:'#4ade80' }, txt:{ label:'HLS TXT', color:'#4ade80', border:'#4ade80' },
-  mp4:{ label:'MP4', color:'#60a5fa', border:'#60a5fa' }, webm:{ label:'WEBM', color:'#60a5fa', border:'#60a5fa' },
-  ts:{ label:'TS', color:'#60a5fa', border:'#60a5fa' }, iframe:{ label:'IFRAME', color:'#a78bfa', border:'#7c5cfc' }
-};
-function showUrlTypeBadge(url) {
-  const badge = document.getElementById('mpUrlTypeBadge');
-  if (!badge) return;
-  if (!url) { badge.style.display = 'none'; return; }
-  const type = detectUrlType(url);
-  const meta = MP_URL_TYPES[type] || MP_URL_TYPES.iframe;
-  badge.textContent = meta.label;
-  badge.style.color = meta.color;
-  badge.style.borderColor = meta.border;
-  badge.style.background = meta.color + '18';
-  badge.style.display = 'inline-flex';
-}
-async function mpApplyUrlFields(url, ref, origin, options={}) {
-  const urlIn = document.getElementById('mpUrlIn');
-  const refIn = document.getElementById('mpRefIn');
-  const origIn = document.getElementById('mpOrigIn');
+async function mpApplyUrlFields(url, ref, origin) {
   mpCurrentStreamUrl = url || '';
-  if (urlIn && options.exposeUrl) urlIn.value = url || '';
-  if (urlIn && options.clearUrl) urlIn.value = '';
-  showUrlTypeBadge((options.showBadge||options.exposeUrl) ? url : '');
   let finalRef = ref || '';
   let finalOrigin = origin || '';
   const detected = await mpDetectHeaders(url);
   if (!finalRef && detected?.ref) finalRef = detected.ref;
   if (!finalOrigin && detected?.origin) finalOrigin = detected.origin;
-  mpCurrentRef = finalRef;
-  mpCurrentOrigin = finalOrigin;
-  if (detected?.source === 'saved') {
-    if (detected.proxyMode) { document.getElementById('mpProxyMode').value = detected.proxyMode; onProxyModeChange(); }
-    if (detected.proxyFmt && document.getElementById('mpProxyFormat')) document.getElementById('mpProxyFormat').value = detected.proxyFmt;
-    if (detected.customUrl) mpCurrentCustomProxyUrl = detected.customUrl;
-  }
-  if (refIn && options.clearHeaders) refIn.value = '';
-  if (origIn && options.clearHeaders) origIn.value = '';
-  if (refIn && options.exposeHeaders) refIn.value = finalRef;
-  if (origIn && options.exposeHeaders) origIn.value = finalOrigin;
   return { ref:finalRef, origin:finalOrigin, detected };
 }
-function onProxyModeChange() {
-  const mode = document.getElementById('mpProxyMode')?.value || 'local';
-  const custom = document.getElementById('mpCustomExtra');
-  if (custom) custom.style.display = mode === 'custom' ? 'block' : 'none';
-}
-function mpEncodeB64(value) {
-  return btoa(unescape(encodeURIComponent(value))).replace(/\+/g,'%2B').replace(/=/g,'%3D');
-}
-function buildSrc(m3u8, ref, orig) {
-  const mode = document.getElementById('mpProxyMode')?.value || 'local';
-  ref = ref || ''; orig = orig || '';
-  if (mode === 'local') return `/proxy?url=${encodeURIComponent(m3u8)}&ref=${encodeURIComponent(ref)}&origin=${encodeURIComponent(orig)}`;
-  if (mode === 'custom') {
-    const base = (document.getElementById('mpCustomProxyUrl')?.value || mpCurrentCustomProxyUrl || '').trim().replace(/\/$/,'');
-    const format = document.getElementById('mpProxyFormat')?.value || 'foxy';
-    if (!base) return m3u8;
-    if (format === 'foxy') {
-      const headers = {...(ref && {Referer:ref}), ...(orig && {Origin:orig})};
-      return `${base}?url=${mpEncodeB64(m3u8)}&headers=${mpEncodeB64(JSON.stringify(headers))}`;
-    }
-    if (format === 'plain') { let q=`${base}?url=${encodeURIComponent(m3u8)}`; if(ref) q+=`&referer=${encodeURIComponent(ref)}`; if(orig) q+=`&origin=${encodeURIComponent(orig)}`; return q; }
-    if (format === 'cors') return `${base}/${m3u8}`;
-  }
-  return m3u8;
+function buildSrc(streamUrl, ref='', orig='') {
+  if (!streamUrl) return '';
+  if (isIframeUrl(streamUrl)) return streamUrl;
+  if (ref || orig) return `/proxy?url=${encodeURIComponent(streamUrl)}&ref=${encodeURIComponent(ref)}&origin=${encodeURIComponent(orig)}`;
+  return streamUrl;
 }
 function isHlsUrl(url) {
   if (!url) return false;
@@ -1089,18 +893,10 @@ function isDirectVideo(url) {
   return /\.(mp4|webm|ogg|mov|mkv|avi|flv|ts)$/.test(u);
 }
 function isIframeUrl(url) { return !isHlsUrl(url) && !isDirectVideo(url); }
-function onSandboxChange() {
-  const on = !!document.getElementById('mpChkSandbox')?.checked;
-  document.getElementById('mpOptSandbox')?.classList.toggle('active', on);
-  localStorage.setItem('megaplayer_opt_sandbox', on ? '1' : '0');
-  if (mpMode === 'iframe' && mpIframeSandboxMode === 'panel') mpApplyIframeOptions();
-}
 function mpApplyIframeOptions() {
   if (!mpIframePlayer) return;
-  if (mpIframeSandboxMode === false) { mpIframePlayer.removeAttribute('sandbox'); return; }
-  if (mpIframeSandboxMode === 'permissive') { mpIframePlayer.setAttribute('sandbox', MP_PERMISSIVE_IFRAME_SANDBOX); return; }
-  if (document.getElementById('mpChkSandbox')?.checked) mpIframePlayer.setAttribute('sandbox', MP_STRICT_IFRAME_SANDBOX);
-  else mpIframePlayer.removeAttribute('sandbox');
+  if (mpIframeSandboxMode === false) mpIframePlayer.removeAttribute('sandbox');
+  else mpIframePlayer.setAttribute('sandbox', MP_PERMISSIVE_IFRAME_SANDBOX);
 }
 function mpDestroyHls() { if (mpHls) { try { mpHls.destroy(); } catch {} mpHls = null; } }
 function mpResetNativeVideo() { if (!mpVid) return; mpVid.pause(); mpVid.removeAttribute('src'); try { mpVid.load(); } catch {} }
@@ -1127,18 +923,14 @@ function showVideoMode(label) {
 function showIframeMode(src, options={}) {
   mpDestroyHls(); mpResetNativeVideo(); mpSetLoading(false);
   mpMode = 'iframe';
-  mpIframeSandboxMode = Object.prototype.hasOwnProperty.call(options, 'sandbox') ? options.sandbox : 'panel';
+  mpIframeSandboxMode = Object.prototype.hasOwnProperty.call(options, 'sandbox') ? options.sandbox : 'permissive';
   mpVwrap?.classList.remove('video-mode','paused','controls-on');
   mpVwrap?.classList.add('iframe-mode');
   mpApplyIframeOptions();
   if (mpIframePlayer && typeof src === 'string') mpIframePlayer.src = src;
   if (src && src !== 'about:blank') mpCurrentStreamUrl = src;
-  const label = options.label || (src && src !== 'about:blank' ? src : 'Stream Extractor · HLS proxy · headers · saved rules');
+  const label = options.label || (src && src !== 'about:blank' ? src : 'Stream Extractor');
   if (mpPanelSub) mpPanelSub.textContent = label;
-  if (src && src !== 'about:blank') {
-    if (options.exposeUrl === true) { const urlIn = document.getElementById('mpUrlIn'); if (urlIn) urlIn.value = src; showUrlTypeBadge(src); }
-    setStatus('Iframe mode — native controls are hidden for embed players.', 'var(--acc3)');
-  }
 }
 function mpTryPlay(options={}) {
   if (options.autoplay === false) return;
@@ -1152,24 +944,25 @@ function mpUseIframeFallback(fallbackUrl, fallbackSandbox, label) {
   return true;
 }
 async function loadStream(streamUrl, ref='', orig='', options={}) {
-  if (!streamUrl) { setStatus('Paste a stream URL first.', 'var(--red)'); return false; }
-  const exposeUrl = options.exposeUrl === true;
-  const fields = await mpApplyUrlFields(streamUrl, ref, orig, { exposeUrl, showBadge:exposeUrl, clearUrl:!exposeUrl, clearHeaders:!exposeUrl });
+  if (!streamUrl) { setStatus('No stream URL found.', 'var(--red)'); return false; }
+  const fields = await mpApplyUrlFields(streamUrl, ref, orig);
   ref = fields.ref; orig = fields.origin;
   mpDestroyHls(); mpResetProgress(); mpSetLoading(false);
-  const mode = document.getElementById('mpProxyMode')?.value || 'local';
-  const modeLabel = mode === 'local' ? 'local proxy' : mode === 'custom' ? 'custom proxy' : 'direct';
   const src = buildSrc(streamUrl, ref, orig);
-  if (isIframeUrl(streamUrl)) { showIframeMode(streamUrl, { sandbox:options.fallbackSandbox??'panel', label:options.label, exposeUrl }); setStatus('Opening in iframe mode.', 'var(--acc3)'); return true; }
+  if (isIframeUrl(streamUrl)) {
+    showIframeMode(streamUrl, { sandbox:options.fallbackSandbox??'permissive', label:options.label });
+    setStatus('Opening embed player.', 'var(--acc3)');
+    return true;
+  }
   showVideoMode(options.label || streamUrl);
-  setStatus(`Connecting via ${modeLabel}...`, 'var(--acc3)');
+  setStatus('Connecting stream...', 'var(--acc3)');
   mpSetLoading(true, 'Connecting stream...');
   let fallbackUsed = false;
   const fallback = () => { if (fallbackUsed) return false; fallbackUsed = true; return mpUseIframeFallback(options.fallbackUrl, options.fallbackSandbox, options.label); };
   if (isDirectVideo(streamUrl)) {
     mpVid.src = src; mpVid.load();
-    mpVid.onloadedmetadata = () => { mpSetLoading(false); setStatus(`Playing direct video via ${modeLabel}.`, 'var(--green)'); };
-    mpVid.onerror = () => { mpSetLoading(false); if (!fallback()) setStatus('Could not load video — try a different proxy mode.', 'var(--red)'); };
+    mpVid.onloadedmetadata = () => { mpSetLoading(false); setStatus('Playing direct video.', 'var(--green)'); };
+    mpVid.onerror = () => { mpSetLoading(false); if (!fallback()) setStatus('Could not load video — try another server.', 'var(--red)'); };
     mpTryPlay(options); return true;
   }
   if (typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -1177,7 +970,7 @@ async function loadStream(streamUrl, ref='', orig='', options={}) {
     mpHls.loadSource(src); mpHls.attachMedia(mpVid);
     mpHls.on(Hls.Events.MANIFEST_PARSED, (_, data) => {
       mpSetLoading(false);
-      setStatus(`Playing HLS — ${data.levels.length} quality level(s) via ${modeLabel}.`, 'var(--green)');
+      setStatus(`Playing HLS — ${data.levels.length} quality level(s).`, 'var(--green)');
       data.levels.forEach((level, index) => {
         const opt = document.createElement('option');
         opt.value = index;
@@ -1186,68 +979,34 @@ async function loadStream(streamUrl, ref='', orig='', options={}) {
       });
       mpTryPlay(options);
     });
-    mpHls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => { const level = mpHls?.levels?.[data.level]; if (level) setStatus(`${level.height ? level.height + 'p' : 'Auto'} — ${Math.round((level.bitrate||0)/1000)}kbps via ${modeLabel}.`, 'var(--muted)'); });
-    mpHls.on(Hls.Events.ERROR, (_, data) => { if (!data.fatal) return; if (data.type === Hls.ErrorTypes.MEDIA_ERROR) { mpHls.recoverMediaError(); return; } mpSetLoading(false); if (!fallback()) setStatus(`${data.details || 'HLS error'} — try a different proxy mode.`, 'var(--red)'); });
+    mpHls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
+      const level = mpHls?.levels?.[data.level];
+      if (level) setStatus(`${level.height ? level.height + 'p' : 'Auto'} — ${Math.round((level.bitrate||0)/1000)}kbps.`, 'var(--muted)');
+    });
+    mpHls.on(Hls.Events.ERROR, (_, data) => {
+      if (!data.fatal) return;
+      if (data.type === Hls.ErrorTypes.MEDIA_ERROR) { mpHls.recoverMediaError(); return; }
+      mpSetLoading(false);
+      if (!fallback()) setStatus(`${data.details || 'HLS error'} — try another server.`, 'var(--red)');
+    });
     return true;
   }
   if (mpVid?.canPlayType('application/vnd.apple.mpegurl')) {
-    mpVid.src = src; mpVid.onloadedmetadata = () => { mpSetLoading(false); setStatus(`Playing native HLS via ${modeLabel}.`, 'var(--green)'); };
-    mpVid.onerror = () => { mpSetLoading(false); if (!fallback()) setStatus('Native HLS failed — try a different proxy mode.', 'var(--red)'); };
+    mpVid.src = src;
+    mpVid.onloadedmetadata = () => { mpSetLoading(false); setStatus('Playing native HLS.', 'var(--green)'); };
+    mpVid.onerror = () => { mpSetLoading(false); if (!fallback()) setStatus('Native HLS failed — try another server.', 'var(--red)'); };
     mpTryPlay(options); return true;
   }
   mpSetLoading(false);
   if (!fallback()) setStatus('HLS is not supported in this browser.', 'var(--red)');
   return false;
 }
-function loadFromInput() {
-  const url = document.getElementById('mpUrlIn')?.value.trim() || '';
-  const ref = document.getElementById('mpRefIn')?.value.trim() || '';
-  const orig = document.getElementById('mpOrigIn')?.value.trim() || '';
-  loadStream(url, ref, orig, { autoplay:true, exposeUrl:true });
-}
-async function saveCurrentRule() {
-  const url = document.getElementById('mpUrlIn')?.value.trim() || mpCurrentStreamUrl;
-  const ref = document.getElementById('mpRefIn')?.value.trim() || mpCurrentRef;
-  const origin = document.getElementById('mpOrigIn')?.value.trim() || mpCurrentOrigin;
-  const proxyMode = document.getElementById('mpProxyMode')?.value || 'local';
-  const proxyFmt = document.getElementById('mpProxyFormat')?.value || 'foxy';
-  const customUrl = document.getElementById('mpCustomProxyUrl')?.value.trim() || '';
-  if (!url) { setStatus('Paste a URL before saving a rule.', 'var(--red)'); return; }
-  let host = '';
-  try { host = new URL(url).hostname; } catch { setStatus('Invalid URL.', 'var(--red)'); return; }
-  await mpSaveUserRule(host, ref, origin, proxyMode, proxyFmt, customUrl);
-  localStorage.setItem('megaplayer_proxy_mode', proxyMode);
-  localStorage.setItem('megaplayer_proxy_fmt', proxyFmt);
-  localStorage.setItem('megaplayer_proxy_custom_url', customUrl);
-  setStatus(`Saved rule for ${host}.`, 'var(--green)');
-}
-async function renderSavedRules(data) {
-  data = data || await mpLoadUserRules();
-  const el = document.getElementById('mpSavedRules');
-  const count = document.getElementById('mpRulesCount');
-  if (!el) return;
-  const entries = Object.entries(data);
-  if (count) count.textContent = entries.length ? `(${entries.length})` : '';
-  el.innerHTML = '';
-  if (!entries.length) { const empty = document.createElement('div'); empty.className = 'mp-rule-ref'; empty.textContent = 'No saved rules yet. Play a URL, then save the CDN rule.'; el.appendChild(empty); return; }
-  entries.forEach(([host, rule]) => {
-    const item = document.createElement('div'); item.className = 'mp-rule-item';
-    const info = document.createElement('div'); info.className = 'mp-rule-info';
-    const hostEl = document.createElement('div'); hostEl.className = 'mp-rule-host'; hostEl.textContent = `${host}${rule.proxyMode ? ' [' + rule.proxyMode + ']' : ''}`;
-    const refEl = document.createElement('div'); refEl.className = 'mp-rule-ref'; refEl.textContent = rule.ref || 'no referer';
-    const del = document.createElement('button'); del.className = 'mp-rule-del'; del.type = 'button'; del.textContent = 'Delete';
-    del.addEventListener('click', () => mpDeleteUserRule(host));
-    info.appendChild(hostEl); info.appendChild(refEl);
-    item.appendChild(info); item.appendChild(del);
-    el.appendChild(item);
-  });
-}
 function mpFormatTime(seconds) {
   if (!seconds || isNaN(seconds) || !isFinite(seconds)) return '0:00';
   const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = Math.floor(seconds%60);
   return h > 0 ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${m}:${String(s).padStart(2,'0')}`;
 }
-function setStatus(msg, color='var(--muted)') { if (mpStatusEl) { mpStatusEl.textContent = msg; mpStatusEl.style.color = color; } }
+function setStatus(msg, color='var(--muted)') { console.debug('[MegaPlayer]', msg); }
 function mpUpdatePlayIcon() { if (!mpBplay) return; mpBplay.innerHTML = mpVid?.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>'; }
 function mpUpdateMuteIcon() { if (!mpBmute) return; const muted = mpVid?.muted || Number(mpVid?.volume) === 0; mpBmute.innerHTML = muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-high"></i>'; }
 function mpSeekTo(clientX) {
@@ -1269,16 +1028,6 @@ async function onUrlInput() {
 async function initMegaPlayer() {
   if (mpReady || !mpVid) return;
   mpReady = true;
-  const savedMode = localStorage.getItem('megaplayer_proxy_mode');
-  const savedFmt = localStorage.getItem('megaplayer_proxy_fmt');
-  const savedCustom = localStorage.getItem('megaplayer_proxy_custom_url');
-  if (savedMode && document.getElementById('mpProxyMode')) document.getElementById('mpProxyMode').value = savedMode;
-  if (savedFmt && document.getElementById('mpProxyFormat')) document.getElementById('mpProxyFormat').value = savedFmt;
-  if (savedCustom) mpCurrentCustomProxyUrl = savedCustom;
-  onProxyModeChange();
-  const sandboxOn = localStorage.getItem('megaplayer_opt_sandbox') === '1';
-  if (document.getElementById('mpChkSandbox')) document.getElementById('mpChkSandbox').checked = sandboxOn;
-  document.getElementById('mpOptSandbox')?.classList.toggle('active', sandboxOn);
   const savedPanelState = localStorage.getItem('megaplayer_panel_open');
   if (savedPanelState && document.getElementById('mpPanel')) document.getElementById('mpPanel').open = savedPanelState === '1';
   document.getElementById('mpPanel')?.addEventListener('toggle', e => { localStorage.setItem('megaplayer_panel_open', e.currentTarget.open ? '1' : '0'); });
@@ -1332,12 +1081,8 @@ async function initMegaPlayer() {
     if (e.key.toLowerCase() === 'm') { mpVid.muted = !mpVid.muted; mpUpdateMuteIcon(); }
     if (e.key.toLowerCase() === 'f') document.getElementById('mpBfs')?.click();
   });
-  document.getElementById('mpUrlIn')?.addEventListener('input', onUrlInput);
-  document.getElementById('mpUrlIn')?.addEventListener('paste', () => setTimeout(onUrlInput, 50));
   mpUpdatePlayIcon(); mpUpdateMuteIcon();
   showIframeMode('about:blank', { sandbox:'permissive' });
-  await renderSavedRules();
-  setStatus('Ready — Hianime m3u8 streams will use the selected proxy.', 'var(--muted)');
 }
 
 // ─── INLINE HLS LAYER (replaces rive-hls-layer + separate TMDB player) ─
