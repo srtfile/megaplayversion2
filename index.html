@@ -284,6 +284,14 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 /* content-type badge dot */
 .sx-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7;display:inline-block;flex-shrink:0}
 
+.sx-combo-list{display:flex;flex-direction:column;gap:8px;padding:0 14px 12px}
+.sx-combo-row{display:grid;grid-template-columns:minmax(120px,.7fr) minmax(180px,1fr) minmax(180px,1fr);gap:8px;align-items:start;padding:9px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.025)}
+.sx-combo-host{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--text);padding:7px 0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sx-combo-col{min-width:0}
+.sx-combo-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:800;margin:0 0 5px}
+.sx-inline-btns{padding:0;gap:5px}
+@media(max-width:760px){.sx-combo-row{grid-template-columns:1fr}.sx-combo-host{padding-bottom:2px}.sx-combo-col{width:100%}}
+
 /* ─── SIDEBAR ─── */
 .ainfo-card{background:var(--bg1);border-radius:var(--rxl);border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
 .ainfo-poster{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:center 20%}
@@ -494,12 +502,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 </div>
 <div class="hls-video-wrap">
 <div class="hls-loading" id="hlsLayerLoading"><div class="spin"></div><span>Loading stream…</span></div>
-<div class="hls-error-state" id="hlsLayerError">
-<i class="fas fa-circle-xmark" style="font-size:28px"></i>
-<span>Could not load stream.</span>
-<span style="font-size:11px;color:var(--muted)">Try another server or check connection.</span>
-<button onclick="closeHlsLayer()">Go Back</button>
-</div>
+<div class="hls-error-state" id="hlsLayerError"></div>
 <video autoplay="" controls="" id="hlsLayerVideo" playsinline=""></video>
 </div>
 </div>
@@ -592,7 +595,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 
         <div class="noticebar">
           <i class="fas fa-circle-info"></i>
-          <span id="noticeText">Auto Next triggers when an episode ends. Use Stream Extractor for direct HLS/MP4 links. Switch servers if one doesn't load.</span>
+          <span id="noticeText">Auto Next triggers when an episode ends. Use Stream Extractor for direct HLS/MP4 links and iframe embeds. Switch servers if one doesn't load.</span>
         </div>
 
         <!-- Episode panel (anime + TMDB TV) -->
@@ -835,50 +838,15 @@ let mpMode = 'iframe';
 let mpIframeSandboxMode = 'permissive';
 let mpCurrentStreamUrl = '';
 
-const MP_KNOWN_RULES = [
-  { cdn:['cdn.mewstream.buzz','mewstream.buzz','voltara.click','lostproject.club'], ref:'https://megaplay.buzz/', origin:'https://megaplay.buzz', label:'MegaPlay' },
-  { cdn:['gogocdn.net','cdn.gogocdn.net','gogoanime'], ref:'https://gogoanime.me.uk/', origin:'https://gogoanime.me.uk', label:'GogoAnime' },
-  { cdn:['megacloud.tv','rapid-cloud.co','megacloud.store'], ref:'https://aniwatch.to/', origin:'https://aniwatch.to', label:'AniWatch/Zoro' },
-  { cdn:['9anime','vidstream','mcloud.to'], ref:'https://9anime.to/', origin:'https://9anime.to', label:'9Anime' },
-  { cdn:['crunchyroll.com','vrv.co'], ref:'https://www.crunchyroll.com/', origin:'https://www.crunchyroll.com', label:'Crunchyroll' },
-  { cdn:['streamtape.com','streamtape.net'], ref:'https://streamtape.com/', origin:'https://streamtape.com', label:'Streamtape' },
-  { cdn:['dood.','doodstream.com','ds2play.com'], ref:'https://doodstream.com/', origin:'https://doodstream.com', label:'DoodStream' },
-  { cdn:['filemoon.sx','filemoon.in'], ref:'https://filemoon.sx/', origin:'https://filemoon.sx', label:'FileMoon' },
-  { cdn:['vizcloud','vidcloud','mcloud'], ref:'https://vidcloud.co/', origin:'https://vidcloud.co', label:'VidCloud' }
-];
-
-async function mpDetectHeaders(url) {
-  if (!url) return null;
-  let host = '';
-  try { host = new URL(url).hostname.toLowerCase(); } catch { return null; }
-  for (const rule of MP_KNOWN_RULES) {
-    if (rule.cdn.some(c => host.includes(c))) return { ref:rule.ref, origin:rule.origin, label:rule.label, source:'built-in' };
-  }
-  try { const u = new URL(url); return { ref:u.origin+'/', origin:u.origin, label:host, source:'auto' }; } catch { return null; }
-}
 async function mpResolveStreamHeaders(url, fallbackUrl) {
-  const detected = await mpDetectHeaders(url);
-  let ref = detected?.ref || '';
-  let origin = detected?.origin || '';
-  if (fallbackUrl && (!detected || detected.source === 'auto')) {
-    try { const embed = new URL(fallbackUrl); ref = embed.href; origin = embed.origin; } catch {}
-  }
-  return { ref, origin, detected };
+  return { ref:'', origin:'', detected:null };
 }
-async function mpApplyUrlFields(url, ref, origin) {
+async function mpApplyUrlFields(url, ref='', origin='') {
   mpCurrentStreamUrl = url || '';
-  let finalRef = ref || '';
-  let finalOrigin = origin || '';
-  const detected = await mpDetectHeaders(url);
-  if (!finalRef && detected?.ref) finalRef = detected.ref;
-  if (!finalOrigin && detected?.origin) finalOrigin = detected.origin;
-  return { ref:finalRef, origin:finalOrigin, detected };
+  return { ref:'', origin:'', detected:null };
 }
-function buildSrc(streamUrl, ref='', orig='') {
-  if (!streamUrl) return '';
-  if (isIframeUrl(streamUrl)) return streamUrl;
-  if (ref || orig) return `/proxy?url=${encodeURIComponent(streamUrl)}&ref=${encodeURIComponent(ref)}&origin=${encodeURIComponent(orig)}`;
-  return streamUrl;
+function buildSrc(streamUrl) {
+  return streamUrl || '';
 }
 function isHlsUrl(url) {
   if (!url) return false;
@@ -1018,10 +986,8 @@ async function onUrlInput() {
   showUrlTypeBadge(url);
   if (!url) return;
   const type = detectUrlType(url);
-  if (type === 'iframe') { setStatus('Embed URL detected — it will open in iframe mode.', 'var(--acc3)'); return; }
-  const fields = await mpApplyUrlFields(url, document.getElementById('mpRefIn')?.value.trim(), document.getElementById('mpOrigIn')?.value.trim(), { showBadge:true });
-  if (fields.detected?.source === 'saved') setStatus(`Saved rule applied: ${fields.detected.label}.`, 'var(--acc3)');
-  else if (fields.detected?.source === 'built-in') setStatus(`Header profile: ${fields.detected.label}.`, 'var(--acc3)');
+  if (type === 'iframe') setStatus('Embed URL detected — it will open in iframe mode.', 'var(--acc3)');
+  else setStatus('Direct stream URL detected.', 'var(--acc3)');
 }
 async function initMegaPlayer() {
   if (mpReady || !mpVid) return;
@@ -1099,14 +1065,10 @@ function openHlsLayer(streamUrl, label) {
 
   function onError() {
     loadingEl.className = 'hls-loading hidden';
-    errorEl.className = 'hls-error-state on';
-    toast('Stream failed to load', '❌');
+    if (errorEl) errorEl.className = 'hls-error-state';
+    console.warn('[HLS] Stream failed to load:', streamUrl);
   }
-
-  // Unwrap hlsforge proxy
   let finalUrl = streamUrl;
-  try { const u = new URL(streamUrl); if (u.hostname === 'hlsforge.com') { const real = u.searchParams.get('url'); if (real) finalUrl = decodeURIComponent(real); } } catch(e) {}
-
   const isM3u8 = finalUrl.includes('.m3u8') || finalUrl.includes('m3u8');
   const isMp4  = finalUrl.includes('.mp4') || finalUrl.includes('mp4');
 
@@ -1360,7 +1322,7 @@ async function openTmdbContent(r){
   }
   loadTmdbSimilar(r.id, r.media_type);
   // Update notice
-  document.getElementById('noticeText').textContent = 'Use Stream Extractor for direct HLS/MP4 links. Movies and TV use the same MegaPlayer shell.';
+  document.getElementById('noticeText').textContent = 'Use Stream Extractor for direct HLS/MP4 links and iframe embeds. Movies and TV use the same MegaPlayer shell.';
 }
 
 function renderTmdbWatchInfo(r){
@@ -1484,7 +1446,7 @@ async function openAnime(a){
     if(alId){ CUR.alId=alId; document.getElementById('id-badge').innerHTML=`<i class="fas fa-fingerprint"></i> MAL ${CUR.malId} · AL ${alId}`; appendAnilistTabs(alId); }
   });
   loadRecommendations(CUR.malId);
-  document.getElementById('noticeText').textContent = 'Auto Next triggers when an episode ends. Use Stream Extractor for direct HLS/MP4 links. Switch servers if one doesn\'t load.';
+  document.getElementById('noticeText').textContent = 'Auto Next triggers when an episode ends. Use Stream Extractor for direct HLS/MP4 links and iframe embeds. Switch servers if one doesn\'t load.';
 }
 
 async function getAnilistId(malId){
@@ -1830,33 +1792,65 @@ function sxRenderBody(items) {
     body.innerHTML = `<div class="sx-empty"><i class="fas fa-satellite-dish"></i><span>Extract direct HLS/MP4 URLs or iframe embeds from supported hosts.</span></div>`;
     return;
   }
+
   const embedItems = items.filter(it => it._kind === 'embed');
   const streamItems = items.filter(it => it._kind === 'stream');
-  let html = '';
-  if (embedItems.length > 0) {
-    html += `<div class="sx-section-lbl"><i class="fas fa-code"></i> Iframe / Embed Servers (${embedItems.length})</div><div class="sx-btns" id="sx-embed-btns">`;
-    embedItems.forEach((it, i) => {
-      const id = `sx-emb-${i}`;
-      html += `<button class="sx-btn iframe-btn" id="${id}" onclick="sxPlayEmbed('${escHtml(it.embed_url)}','${escHtml(it.host_label)}','${id}')"><span class="sx-dot"></span>${escHtml(it.host_label)}<span class="sx-badge iframe">IFRAME</span></button>`;
-    });
-    html += `</div>`;
+  const ok = streamItems.filter(it => it.status === 'ok');
+  const failed = streamItems.filter(it => it.status !== 'ok');
+  const groups = new Map();
+
+  function keyFor(it) {
+    return String(it.host_label || it.host || it.name || 'Unknown Server').trim();
   }
-  if (streamItems.length > 0) {
-    const ok = streamItems.filter(it => it.status === 'ok');
-    const err = streamItems.filter(it => it.status !== 'ok');
-    html += `<div class="sx-section-lbl"><i class="fas fa-bolt"></i> Extracted Streams (${ok.length} ok${err.length?', '+err.length+' failed':''})</div><div class="sx-btns" id="sx-stream-btns">`;
-    streamItems.forEach((it, i) => {
-      const id = `sx-str-${i}`;
-      if (it.status === 'ok' && it.stream_url) {
-        const badge = it.stream_type === 'm3u8' ? 'M3U8' : it.stream_type === 'mp4' ? 'MP4' : (it.stream_type?.toUpperCase()||'?');
-        const badgeClass = it.stream_type === 'm3u8' ? 'm3u8' : it.stream_type === 'mp4' ? 'mp4' : '';
-        html += `<button class="sx-btn ok" id="${id}" onclick="sxPlayStream('${escHtml(it.stream_url)}','${escHtml(it.host_label)}','${escHtml(it.stream_type||'')}','${escHtml(JSON.stringify(it.headers||{}))}','${id}')"><span class="sx-dot" style="background:var(--green)"></span>${escHtml(it.host_label)}<span class="sx-badge ${badgeClass}">${badge}</span></button>`;
-      } else {
-        html += `<button class="sx-btn" disabled title="${escHtml(it.error||'Failed')}"><span class="sx-dot" style="background:#ff6b6b"></span>${escHtml(it.host_label)}<span class="sx-badge err">FAIL</span></button>`;
-      }
-    });
-    html += `</div>`;
+  function ensureGroup(label) {
+    const key = label || 'Unknown Server';
+    if (!groups.has(key)) groups.set(key, { label:key, embeds:[], streams:[] });
+    return groups.get(key);
   }
+
+  embedItems.forEach((it, i) => ensureGroup(keyFor(it)).embeds.push({ ...it, _idx:i }));
+  streamItems.forEach((it, i) => ensureGroup(keyFor(it)).streams.push({ ...it, _idx:i }));
+
+  let html = `<div class="sx-section-lbl"><i class="fas fa-link"></i> Iframe / Embed Servers + Extracted Streams (${embedItems.length} embeds · ${ok.length} ok${failed.length?', '+failed.length+' failed':''})</div>`;
+  html += `<div class="sx-combo-list">`;
+
+  groups.forEach((group, groupIdx) => {
+    html += `<div class="sx-combo-row">`;
+    html += `<div class="sx-combo-host"><span class="sx-dot"></span>${escHtml(group.label)}</div>`;
+    html += `<div class="sx-combo-col"><div class="sx-combo-label">Iframe / Embed Server</div><div class="sx-btns sx-inline-btns">`;
+
+    if (group.embeds.length) {
+      group.embeds.forEach((it, i) => {
+        const id = `sx-emb-${groupIdx}-${i}`;
+        html += `<button class="sx-btn iframe-btn" id="${id}" onclick="sxPlayEmbed('${escHtml(it.embed_url)}','${escHtml(group.label)}','${id}')"><span class="sx-dot"></span>Open Embed<span class="sx-badge iframe">IFRAME</span></button>`;
+      });
+    } else {
+      html += `<button class="sx-btn" disabled><span class="sx-dot"></span>No embed<span class="sx-badge err">N/A</span></button>`;
+    }
+
+    html += `</div></div>`;
+    html += `<div class="sx-combo-col"><div class="sx-combo-label">Extracted Streams</div><div class="sx-btns sx-inline-btns">`;
+
+    if (group.streams.length) {
+      group.streams.forEach((it, i) => {
+        const id = `sx-str-${groupIdx}-${i}`;
+        if (it.status === 'ok' && it.stream_url) {
+          const badge = it.stream_type === 'm3u8' ? 'M3U8' : it.stream_type === 'mp4' ? 'MP4' : (it.stream_type?.toUpperCase()||'STREAM');
+          const badgeClass = it.stream_type === 'm3u8' ? 'm3u8' : it.stream_type === 'mp4' ? 'mp4' : '';
+          html += `<button class="sx-btn ok" id="${id}" onclick="sxPlayStream('${escHtml(it.stream_url)}','${escHtml(group.label)}','${escHtml(it.stream_type||'')}','${id}')"><span class="sx-dot" style="background:var(--green)"></span>Play Stream<span class="sx-badge ${badgeClass}">${badge}</span></button>`;
+        } else {
+          html += `<button class="sx-btn" disabled title="${escHtml(it.error||'Failed')}"><span class="sx-dot" style="background:#ff6b6b"></span>Stream failed<span class="sx-badge err">FAIL</span></button>`;
+        }
+      });
+    } else {
+      html += `<button class="sx-btn" disabled><span class="sx-dot"></span>Waiting<span class="sx-badge">—</span></button>`;
+    }
+
+    html += `</div></div>`;
+    html += `</div>`;
+  });
+
+  html += `</div>`;
   body.innerHTML = html;
 }
 
@@ -1956,16 +1950,9 @@ function sxPlayEmbed(embedUrl, label, btnId) {
 }
 
 // Play an extracted stream — opens in the inline HLS layer
-function sxPlayStream(streamUrl, label, streamType, headersJson, btnId) {
+function sxPlayStream(streamUrl, label, streamType, btnId) {
   sxSetActiveBtn(btnId);
-  let headers = {};
-  try { headers = JSON.parse(headersJson); } catch {}
-  const referer = headers.Referer || headers.referer || '';
-  let finalUrl = streamUrl;
-  if ((streamType === 'm3u8' || streamUrl.includes('.m3u8')) && referer) {
-    finalUrl = `${sxApiBase()}/proxy?url=${encodeURIComponent(streamUrl)}&ref=${encodeURIComponent(referer)}`;
-  }
-  openHlsLayer(finalUrl, `${label} · ${streamType?.toUpperCase()||'STREAM'}`);
+  openHlsLayer(streamUrl, `${label} · ${streamType?.toUpperCase()||'STREAM'}`);
   document.getElementById('wep-lbl').textContent = `${streamType?.toUpperCase()||'Stream'} · ${label}`;
   toast(`Playing ${label} (${streamType?.toUpperCase()||'stream'})`, '🎬', 2500);
 }
