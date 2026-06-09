@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
 :root {
   --bg0:#05050f;--bg1:#09091a;--bg2:#0f0f24;--bg3:#151530;--bg4:#1a1a3a;
@@ -132,57 +131,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 .ptitle{font-weight:800;font-size:clamp(14px,2.5vw,17px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pep-lbl{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:1px}
 
-/* ─── VIDEO AREA ─── */
-.vid-ratio{position:relative;width:100%;padding-bottom:56.25%;background:#000}
-.vid-ratio iframe,.vid-ratio video{position:absolute;inset:0;width:100%;height:100%;border:none;background:#000}
-
-/* ─── AUTO-NEXT ─── */
-.autonext-overlay{position:absolute;bottom:80px;right:16px;z-index:60;background:rgba(5,5,15,.95);backdrop-filter:blur(12px);border:1px solid var(--bordera);border-radius:14px;padding:16px 18px;display:none;flex-direction:column;align-items:flex-end;gap:10px;min-width:210px;box-shadow:0 8px 40px rgba(99,77,255,.25)}
-.autonext-overlay.on{display:flex;animation:anSlideIn .35s cubic-bezier(.34,1.56,.64,1)}
-@keyframes anSlideIn{from{opacity:0;transform:translateY(14px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
-.an-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.8px}
-.an-epname{font-size:14px;font-weight:800;color:var(--text)}
-.an-countdown{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;color:var(--acc);text-shadow:0 0 24px var(--glow);width:100%;text-align:right}
-.an-progress{width:100%;height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
-.an-progress-bar{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .08s linear}
-.an-actions{display:flex;gap:8px;width:100%}
-.an-btn{flex:1;padding:8px 12px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all var(--tr)}
-.an-btn-skip{background:linear-gradient(135deg,var(--acc),#9070ff);color:#fff}
-.an-btn-skip:hover{transform:scale(1.04)}
-.an-btn-cancel{background:var(--card);color:var(--muted);border:1px solid var(--border)}
-.an-btn-cancel:hover{color:var(--text);border-color:var(--bordera)}
-
-/* ─── EP ENDED BAR ─── */
-
-/* ─── PLAYER CONTROLS BAR ─── */
-.player-ctrl-bar{background:var(--bg2);border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ctrl-group{display:flex;align-items:center;gap:6px}
-.ctrl-divider{width:1px;height:22px;background:var(--border);margin:0 4px}
-.ctoggle{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all var(--tr);white-space:nowrap;user-select:none}
-.ctoggle:hover{border-color:var(--bordera);color:var(--text)}
-.ctoggle.on{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.45);color:var(--green)}
-.ctoggle .ticon{font-size:13px}
-.ctoggle .tswitch{width:28px;height:16px;background:rgba(255,255,255,.1);border-radius:99px;position:relative;transition:background var(--tr);flex-shrink:0}
-.ctoggle.on .tswitch{background:var(--green)}
-.ctoggle .tswitch::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:#fff;border-radius:50%;transition:transform var(--tr);box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.ctoggle.on .tswitch::after{transform:translateX(12px)}
-
-/* ─── SERVER TABS ─── */
-.srvbar{background:var(--bg2);border-top:1px solid var(--border);padding:11px 16px;display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
-.srvlbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;flex-shrink:0;padding-top:7px}
-.srvcats{display:flex;gap:12px;flex:1;flex-wrap:wrap}
-.srvside{display:flex;flex-direction:column;gap:6px;flex:1;min-width:140px}
-.srvsidelbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;padding-bottom:2px;border-bottom:1px solid var(--border);margin-bottom:2px}
-.srvsidelbl.dub{color:#f97316;border-color:rgba(249,115,22,.3)}
-.srvsidelbl.sub{color:#00dfff;border-color:rgba(0,223,255,.3)}
-.srvgroup{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.srvtab{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);transition:all var(--tr);font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px}
-.srvtab:hover{border-color:var(--bordera);color:var(--text)}
-.srvtab.on{background:rgba(99,77,255,.18);border-color:var(--acc);color:var(--acc)}
-.srvtab.dub-tab.on{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.6);color:#f97316}
-.srvtab.sub-tab.on{background:rgba(0,223,255,.1);border-color:rgba(0,223,255,.5);color:var(--acc3)}
-.srvtab .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.65}
-
 /* ─── EPISODE PANEL ─── */
 .eppanel{background:var(--bg1);border-radius:var(--rxl);border:1px solid var(--border);overflow:hidden;margin-top:18px}
 .eppanel-hd{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
@@ -274,20 +222,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
 .tcard-ttl{font-size:clamp(12px,1.7vw,14px);font-weight:700;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:4px}
 .tcard-sub{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
 
-/* ─── INLINE HLS LAYER (inside player box) ─── */
-.hls-layer{position:absolute;inset:0;display:none;flex-direction:column;background:#000;z-index:15}
-.hls-layer.on{display:flex}
-.hls-topbar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0}
-.hls-back-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--text);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;transition:all var(--tr)}
-.hls-back-btn:hover{background:var(--cardh);border-color:var(--bordera)}
-.hls-topbar-label{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hls-video-wrap{flex:1;position:relative;background:#000}
-.hls-video-wrap video{width:100%;height:100%;object-fit:contain;background:#000;display:block}
-.hls-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(5,5,15,.92);color:var(--muted);font-size:13px;z-index:5;pointer-events:none}
-.hls-loading.hidden{display:none}
-.hls-error-state{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(5,5,15,.92);color:#ff6b6b;font-size:13px;z-index:6;padding:24px;text-align:center}
-.hls-error-state.on{display:flex}
-.hls-error-state button{margin-top:8px;padding:8px 20px;border-radius:8px;background:var(--acc);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;font-size:13px}
 </style>
 </head>
 <body>
@@ -372,111 +306,30 @@ header{position:sticky;top:0;z-index:200;background:rgba(5,5,15,.9);backdrop-fil
     <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back to Home</button>
     <div class="wlayout">
       <div class="wmain">
-        <div class="pbox" id="pbox">
-          <div class="ptoolbar">
-            <div class="ptitle-area">
-              <div class="ptitle" id="wtitle">—</div>
-              <div class="pep-lbl" id="wep-lbl">—</div>
-            </div>
-            <div class="id-badge" id="id-badge"><i class="fas fa-fingerprint"></i> —</div>
-          </div>
-
-          <!-- Video / Iframe container -->
-          <div class="vid-ratio mp-vwrap paused iframe-mode" id="mpVwrap">
-            <div class="mp-iframe-wrap" id="mpIframeWrap">
-              <iframe id="vplayer"
-                allowfullscreen
-                referrerpolicy="strict-origin-when-cross-origin"
-                allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-                sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-popups allow-popups-to-escape-sandbox">
-              </iframe>
-            </div>
-            <div class="mp-center-state" id="mpLoading">
-              <div class="spin"></div>
-              <span id="mpLoadingText">Loading stream...</span>
-            </div>
-            <!-- Auto-next overlay -->
-            <div class="autonext-overlay" id="autonextOverlay">
-              <div class="an-label">Next episode in</div>
-              <div class="an-countdown" id="anCountdown">15</div>
-              <div class="an-progress"><div class="an-progress-bar" id="anBar" style="width:100%"></div></div>
-              <div class="an-epname" id="anEpName">Episode 2</div>
-              <div class="an-actions">
-                <button class="an-btn an-btn-skip" onclick="playNextEpNow()"><i class="fas fa-play"></i> Play Now</button>
-                <button class="an-btn an-btn-cancel" onclick="cancelAutoNext()">Cancel</button>
-              </div>
-            </div>
-
-            <!-- Inline HLS layer (for extracted streams & TMDB downloads) -->
-            <div class="hls-layer" id="hlsLayer">
-              <div class="hls-topbar">
-                <button class="hls-back-btn" onclick="closeHlsLayer()"><i class="fas fa-arrow-left"></i> Back</button>
-                <span id="hlsLayerLabel" class="hls-topbar-label"></span>
-              </div>
-              <div class="hls-video-wrap">
-                <div class="hls-loading" id="hlsLayerLoading"><div class="spin"></div><span>Loading stream…</span></div>
-                <div class="hls-error-state" id="hlsLayerError">
-                  <i class="fas fa-circle-xmark" style="font-size:28px"></i>
-                  <span>Could not load stream.</span>
-                  <span style="font-size:11px;color:var(--muted)">Try another server or check connection.</span>
-                  <button onclick="closeHlsLayer()">Go Back</button>
+          <div class="sx-wrap" id="sx-wrap">
+            <div class="sx-header">
+              <div class="sx-title-row">
+                <div class="sx-icon"><i class="fas fa-bolt"></i></div>
+                <div>
+                  <div class="sx-title">Stream Extractor</div>
+                  <div class="sx-subtitle" id="sx-status">Click "Extract Streams" to fetch direct URLs for this title.</div>
                 </div>
-                <video id="hlsLayerVideo" controls autoplay playsinline></video>
+              </div>
+              <button class="sx-extract-btn" id="sx-extract-btn" onclick="sxExtract()">
+                <i class="fas fa-satellite-dish"></i> Extract Streams
+              </button>
+            </div>
+            <div class="sx-progress" id="sx-progress-wrap">
+              <div class="sx-progress-bar" id="sx-progress-bar"></div>
+            </div>
+            <div id="sx-body">
+              <div class="sx-empty">
+                <i class="fas fa-satellite-dish"></i>
+                <span>Extracts HLS/MP4 URLs and iframe embeds from all pipeline hosts.</span>
               </div>
             </div>
           </div>
-
-
-
-          <!-- Server tabs -->
-          <div class="srvbar">
-            <span class="srvlbl">Servers</span>
-            <div class="srvcats" id="srvcats"></div>
-          </div>
-
-          <!-- ═══ UNIFIED PANEL ═══ -->
-              <!-- ① STREAM EXTRACTOR — top of panel -->
-              <div class="sx-wrap" id="sx-wrap">
-                <div class="sx-header">
-                  <div class="sx-title-row">
-                    <div class="sx-icon"><i class="fas fa-bolt"></i></div>
-                    <div>
-                      <div class="sx-title">Stream Extractor</div>
-                      <div class="sx-subtitle" id="sx-status">Click "Extract Streams" to fetch direct URLs for this title.</div>
-                    </div>
-                  </div>
-                  <button class="sx-extract-btn" id="sx-extract-btn" onclick="sxExtract()">
-                    <i class="fas fa-satellite-dish"></i> Extract Streams
-                  </button>
-                </div>
-                <div class="sx-progress" id="sx-progress-wrap">
-                  <div class="sx-progress-bar" id="sx-progress-bar"></div>
-                </div>
-                <div id="sx-body">
-                  <div class="sx-empty">
-                    <i class="fas fa-satellite-dish"></i>
-                    <span>Extracts HLS/MP4 URLs and iframe embeds from all pipeline hosts.</span>
-                  </div>
-                </div>
-              </div>
-
-
-        <div class="noticebar">
-          <i class="fas fa-circle-info"></i>
-          <span id="noticeText">Auto Next triggers when an episode ends. Use Stream Extractor for direct HLS/MP4 links. Switch servers if one doesn't load.</span>
-        </div>
-
-        <!-- Episode panel (anime + TMDB TV) -->
-        <div class="eppanel" id="eppanel" style="display:none">
-          <div class="eppanel-hd">
-            <span class="eppanel-ttl"><i class="fas fa-list-ol"></i> Episodes</span>
-            <select class="season-sel" id="tw-season-sel" onchange="onTmdbSeasonChange()" style="display:none"></select>
-            <span class="epbadge" id="epcnt">0 eps</span>
-          </div>
-          <div class="epgrid" id="epgrid"></div>
-        </div>
       </div>
-
       <div class="wsidebar">
         <div class="ainfo-card" id="ainfo-card"></div>
         <div class="rel-ttl">Recommended</div>
@@ -498,356 +351,13 @@ const TMDB_IMG_BG = 'https://image.tmdb.org/t/p/original';
 
 const FALLBACK = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDIwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMwZjBmMjQiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM2MzRkZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWFnZTwvdGV4dD48L3N2Zz4=';
 
-// ─── SERVER DEFINITIONS ───────────────────────────────────────────────
-const MAL_SERVERS = [
-  { id:'mp-mal-dub', label:'MegaPlay DUB', icon:'🇺🇸', buildUrl:(id,ep)=>`https://megaplay.buzz/stream/mal/${id}/${ep}/dub` },
-  { id:'mp-mal-sub', label:'MegaPlay SUB', icon:'🎌', buildUrl:(id,ep)=>`https://megaplay.buzz/stream/mal/${id}/${ep}/sub` }
-];
-const AL_SERVERS = [
-  { id:'mp-al-dub', label:'AniList DUB', icon:'🇺🇸', buildUrl:(id,ep)=>`https://megaplay.buzz/stream/ani/${id}/${ep}/dub` },
-  { id:'mp-al-sub', label:'AniList SUB', icon:'🎌', buildUrl:(id,ep)=>`https://megaplay.buzz/stream/ani/${id}/${ep}/sub` }
-];
-const DEFAULT_SRV = 'mp-mal-dub';
-
-// TMDB / RiveStream servers
-const RIVE_SERVERS = [
-  {
-    id: 'rive-main',
-    label: 'RiveStream',
-    icon: '🎬',
-    buildMovieUrl: (tmdbId) => `https://rivestream.ru/download?type=movie&id=${tmdbId}`,
-    buildTvUrl:    (tmdbId, season, ep) => `https://rivestream.ru/download?type=tv&id=${tmdbId}&season=${season}&episode=${ep}`
-  }
-];
-
-// Hianime index
-const HIANIME_INDEX_URL = 'https://raw.githubusercontent.com/srtfile/alist/main/index.json';
-let   HIANIME_INDEX     = null;
-const HIANIME_DATA_CACHE = {};
-const EPISODE_TITLES_CACHE = {};
-const HIANIME_SUB_SERVERS  = ['HD-1','HD-2','StreamHG','Earnvids'];
-const HIANIME_DUB_SERVERS  = ['HD-1','HD-2','StreamHG','Earnvids'];
-const HIANIME_HSUB_SERVERS = ['HD-1','HD-2','StreamHG','Earnvids','Doodstream'];
-let HIANIME_CUR_SUB_SRV = 'HD-1';
-let HIANIME_CUR_DUB_SRV = 'HD-1';
-let HIANIME_CUR_HSUB_SRV = 'HD-1';
-
-// Kiwi / VidWish
-const KIWI_RENDER = 'https://anime-stream-finder.onrender.com';
-const KIWI_SERVERS = [
-  { id:'kiwi-dub', label:'Kiwi DUB', icon:'🥝', type:'dub' },
-  { id:'kiwi-sub', label:'Kiwi SUB', icon:'🥝', type:'sub' }
-];
-const VIDWISH_REALID_SERVERS = [
-  { id:'vw-rid-dub', label:'VidWish DUB', icon:'🔊', type:'dub' },
-  { id:'vw-rid-sub', label:'VidWish SUB', icon:'📺', type:'sub' }
-];
-const KIWI_CACHE = {};
-
 // ─── STATE ────────────────────────────────────────────────────────────
-// Unified state: watchMode = 'anime' | 'tmdb'
-let WATCH_MODE = 'anime';
-let CUR = { anime:null, ep:1, malId:null, alId:null, srvId:DEFAULT_SRV };
-let TMDB_CUR = { content:null, type:'movie', season:1, ep:1, srv:'rive-main', allSeasons:[] };
+let CUR = { anime:null, ep:1, malId:null };
+let TMDB_CUR = { content:null, type:'movie', season:1, ep:1, allSeasons:[] };
 let heroArr=[], heroIdx=0, heroTmr=null;
 const CACHE = {};
-let SETTINGS = { autoplay:true, autonext:true };
-let hlsLayerInstance = null; // HLS.js instance for inline HLS layer
 
-// Allowed stream domains for inline HLS interception
-const RIVE_ALLOWED_DOMAINS = [
-  'proxy.valhallastream.dpdns.org','hlsforge.com','bcdnxw.hakunaymatata.com','syr.ellionhealth.cyou'
-];
-
-// ─── SETTINGS ─────────────────────────────────────────────────────────
-function loadSettings(){ try{ const s=JSON.parse(localStorage.getItem('anistream_settings4')); if(s) Object.assign(SETTINGS,s); }catch{} }
-function saveSettings(){ try{ localStorage.setItem('anistream_settings4',JSON.stringify(SETTINGS)); }catch{} }
-loadSettings();
-
-// ─── HIANIME HELPERS ──────────────────────────────────────────────────
-async function fetchHianimeIndex() {
-  if (HIANIME_INDEX) return HIANIME_INDEX;
-  try {
-    const r = await fetch(HIANIME_INDEX_URL);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    HIANIME_INDEX = await r.json();
-    return HIANIME_INDEX;
-  } catch(e) { console.warn('Hianime index fetch failed:', e); return null; }
 }
-async function fetchHianimeData(malId) {
-  if (HIANIME_DATA_CACHE[malId]) return HIANIME_DATA_CACHE[malId];
-  const index = await fetchHianimeIndex();
-  if (!index) return null;
-  const entry = index.find(e => e.mal_id === malId);
-  if (!entry) return null;
-  try {
-    const r = await fetch(entry.raw_url);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const data = await r.json();
-    HIANIME_DATA_CACHE[malId] = data;
-    return data;
-  } catch(e) { console.warn('Hianime data fetch failed:', e); return null; }
-}
-function getHianimeSource(data, epNum, type, serverGroup) {
-  const epIdx = epNum - 1;
-  const eps = data?.episodes;
-  if (!eps || !eps[epIdx]) return null;
-  const ep = eps[epIdx];
-  const typeData = ep[type];
-  if (!typeData) return null;
-  const grp = typeData[serverGroup];
-  if (!grp) return null;
-  const keys = Object.keys(grp);
-  const embedKey = keys.find(k => !k.endsWith('_m3u8'));
-  const m3u8Key  = keys.find(k => k.endsWith('_m3u8'));
-  const hlsUrl = m3u8Key ? grp[m3u8Key] : null;
-  const embedUrl = embedKey ? grp[embedKey] : null;
-  if (hlsUrl) return { url:hlsUrl, kind:'hls', embedUrl, key:m3u8Key };
-  if (embedUrl) return { url:embedUrl, kind:'iframe', embedUrl, key:embedKey };
-  return null;
-}
-async function playHianimeServer(type, serverGroup) {
-  restoreIframePlayer();
-  const iframe = document.getElementById('vplayer');
-  const iframeSandbox = (serverGroup === 'StreamHG' || serverGroup === 'Earnvids' || serverGroup === 'Doodstream') ? false : 'permissive';
-  if (iframeSandbox === false) iframe?.removeAttribute('sandbox');
-  else iframe?.setAttribute('sandbox', MP_PERMISSIVE_IFRAME_SANDBOX);
-  showIframeMode('about:blank', { sandbox: iframeSandbox });
-  const epTitle = EPISODE_TITLES_CACHE[CUR.malId]?.[CUR.ep] || '';
-  const epTitleSuffix = epTitle ? ` - ${epTitle}` : '';
-  const label = `Hianime ${type.toUpperCase()} · ${serverGroup} · Ep ${CUR.ep}${epTitleSuffix}`;
-  document.getElementById('wep-lbl').textContent = label + ' · Loading…';
-  toast(`Loading Hianime ${type.toUpperCase()} ${serverGroup}…`, '🌸', 4000);
-  const data = await fetchHianimeData(CUR.malId);
-  if (!data) { toast(`Hianime_multi — anime not in index (MAL ${CUR.malId})`, '⚠️'); document.getElementById('wep-lbl').textContent = label + ' · Not in index'; return; }
-  const source = getHianimeSource(data, CUR.ep, type, serverGroup);
-  if (!source?.url) { toast(`Hianime ${type.toUpperCase()} ${serverGroup} — not available for Ep ${CUR.ep}`, '⚠️'); document.getElementById('wep-lbl').textContent = label + ' · Not available'; return; }
-  if (isHlsUrl(source.url)) {
-    openHlsLayer(source.url, label);
-    document.getElementById('wep-lbl').textContent = label + ' · HLS';
-    toast(`Hianime ${type.toUpperCase()} ${serverGroup} loaded`, '🌸');
-  } else {
-    showIframeMode(source.url, { sandbox: iframeSandbox, label });
-    document.getElementById('wep-lbl').textContent = label;
-    toast(`Hianime ${type.toUpperCase()} ${serverGroup} loaded`, '🌸');
-  }
-  highlightEpBtn(CUR.ep);
-}
-
-// ─── KIWI FETCHERS ────────────────────────────────────────────────────
-async function fetchKiwiStreams(malId, ep) {
-  const key = `${malId}-${ep}`;
-  if (KIWI_CACHE[key]) return KIWI_CACHE[key];
-  try {
-    const r = await fetch(`${KIWI_RENDER}/api/stream?mal=${malId}&ep=${ep}`);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const data = await r.json();
-    if (data.error) throw new Error(data.error);
-    KIWI_CACHE[key] = data; return data;
-  } catch(e) { return null; }
-}
-async function playKiwiServer(srvId) {
-  const srv = KIWI_SERVERS.find(s => s.id === srvId);
-  if (!srv) return;
-  const epTitle = EPISODE_TITLES_CACHE[CUR.malId]?.[CUR.ep] || '';
-  const epTitleSuffix = epTitle ? ` - ${epTitle}` : '';
-  restoreIframePlayer();
-  showIframeMode('about:blank', { sandbox: 'permissive' });
-  document.getElementById('wep-lbl').textContent = `${srv.label} · Ep ${CUR.ep}${epTitleSuffix} · Loading…`;
-  toast(`Fetching ${srv.label} stream…`, '🥝', 4000);
-  const data = await fetchKiwiStreams(CUR.malId, CUR.ep);
-  if (!data) { toast(`${srv.label} failed — render may be sleeping`, '❌'); document.getElementById('wep-lbl').textContent = `${srv.label} · Ep ${CUR.ep}${epTitleSuffix} · Failed`; return; }
-  const kiwiData = data.kiwi?.[srv.type];
-  if (!kiwiData || kiwiData.error) { toast(`${srv.label} not available for this episode`, '⚠️'); document.getElementById('wep-lbl').textContent = `${srv.label} · Ep ${CUR.ep}${epTitleSuffix} · Not available`; return; }
-  const playerUrl = kiwiData.player_url;
-  if (!playerUrl) { toast(`${srv.label} — no player URL`, '❌'); return; }
-  showIframeMode(playerUrl, { sandbox: 'permissive', label: `${srv.label} · Ep ${CUR.ep}${epTitleSuffix}` });
-  document.getElementById('wep-lbl').textContent = `${srv.label} · Ep ${CUR.ep}${epTitleSuffix}`;
-  highlightEpBtn(CUR.ep);
-  toast(`${srv.label} loaded`, '🥝');
-}
-async function playVidWishRealid(srvId) {
-  const srv = VIDWISH_REALID_SERVERS.find(s => s.id === srvId);
-  if (!srv) return;
-  const epTitle = EPISODE_TITLES_CACHE[CUR.malId]?.[CUR.ep] || '';
-  const epTitleSuffix = epTitle ? ` - ${epTitle}` : '';
-  restoreIframePlayer();
-  showIframeMode('about:blank', { sandbox: 'permissive' });
-  document.getElementById('wep-lbl').textContent = `${srv.label} · Ep ${CUR.ep}${epTitleSuffix} · Loading…`;
-  toast(`Fetching ${srv.label} stream…`, '🎬', 4000);
-  const data = await fetchKiwiStreams(CUR.malId, CUR.ep);
-  if (!data) { toast(`${srv.label} failed — render may be sleeping`, '❌'); document.getElementById('wep-lbl').textContent = `${srv.label} · Ep ${CUR.ep}${epTitleSuffix} · Failed`; return; }
-  const realid = data.realid;
-  if (!realid) { toast(`${srv.label} — realid not found`, '⚠️'); document.getElementById('wep-lbl').textContent = `${srv.label} · Ep ${CUR.ep}${epTitleSuffix} · No realid`; return; }
-  const url = `https://vidwish.live/stream/s-2/${realid}/${srv.type}?autostart=true`;
-  showIframeMode(url, { sandbox: 'permissive', label: `${srv.label} · Ep ${CUR.ep}${epTitleSuffix}` });
-  document.getElementById('wep-lbl').textContent = `${srv.label} · Ep ${CUR.ep}${epTitleSuffix}`;
-  highlightEpBtn(CUR.ep);
-  toast(`${srv.label} loaded (realid: ${realid})`, '🎬');
-}
-// ─── IFRAME PLAYER HELPERS ───────────────────────────────────────────
-const MP_PERMISSIVE_IFRAME_SANDBOX = 'allow-scripts allow-same-origin allow-forms allow-presentation allow-popups allow-popups-to-escape-sandbox';
-function isHlsUrl(url) {
-  if (!url) return false;
-  const u = url.split('?')[0].toLowerCase();
-  return u.endsWith('.m3u8') || u.includes('.m3u8') || u.endsWith('.txt');
-}
-function showIframeMode(src, options={}) {
-  const iframe = document.getElementById('vplayer');
-  const sub = document.getElementById('mpPanelSub');
-  if (iframe && typeof src === 'string') iframe.src = src;
-  if (sub && options.label && src !== 'about:blank') sub.textContent = options.label;
-}
-function restoreIframePlayer() {
-  const iframe = document.getElementById('vplayer');
-  if (iframe) showIframeMode('about:blank', { sandbox: 'permissive' });
-}
-
-// ─── INLINE HLS LAYER (replaces rive-hls-layer + separate TMDB player) ─
-function openHlsLayer(streamUrl, label) {
-  const layer = document.getElementById('hlsLayer');
-  const video = document.getElementById('hlsLayerVideo');
-  const loadingEl = document.getElementById('hlsLayerLoading');
-  const errorEl = document.getElementById('hlsLayerError');
-  const labelEl = document.getElementById('hlsLayerLabel');
-  if (hlsLayerInstance) { try { hlsLayerInstance.destroy(); } catch(e){} hlsLayerInstance = null; }
-  video.pause(); video.src = '';
-  labelEl.textContent = label || streamUrl;
-  loadingEl.className = 'hls-loading';
-  errorEl.className = 'hls-error-state';
-  layer.classList.add('on');
-
-  function onError() {
-    loadingEl.className = 'hls-loading hidden';
-    errorEl.className = 'hls-error-state on';
-    toast('Stream failed to load', '❌');
-  }
-
-  // Unwrap hlsforge proxy
-  let finalUrl = streamUrl;
-  try { const u = new URL(streamUrl); if (u.hostname === 'hlsforge.com') { const real = u.searchParams.get('url'); if (real) finalUrl = decodeURIComponent(real); } } catch(e) {}
-
-  const isM3u8 = finalUrl.includes('.m3u8') || finalUrl.includes('m3u8');
-  const isMp4  = finalUrl.includes('.mp4') || finalUrl.includes('mp4');
-
-  if (isMp4 && !isM3u8) {
-    video.src = finalUrl;
-    video.onloadeddata = () => { loadingEl.className = 'hls-loading hidden'; };
-    video.onerror = onError;
-    video.play().catch(()=>{});
-  } else if (isM3u8) {
-    if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-      hlsLayerInstance = new Hls({ enableWorker:true, lowLatencyMode:false });
-      hlsLayerInstance.loadSource(finalUrl);
-      hlsLayerInstance.attachMedia(video);
-      hlsLayerInstance.on(Hls.Events.MANIFEST_PARSED, () => { loadingEl.className = 'hls-loading hidden'; video.play().catch(()=>{}); });
-      hlsLayerInstance.on(Hls.Events.ERROR, (evt, data) => { if (data.fatal) onError(); });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = finalUrl;
-      video.onloadeddata = () => { loadingEl.className = 'hls-loading hidden'; };
-      video.onerror = onError;
-      video.play().catch(()=>{});
-    } else { onError(); }
-  } else {
-    video.src = finalUrl;
-    video.onloadeddata = () => { loadingEl.className = 'hls-loading hidden'; };
-    video.onerror = onError;
-    video.play().catch(()=>{});
-  }
-}
-
-function closeHlsLayer() {
-  const layer = document.getElementById('hlsLayer');
-  const video = document.getElementById('hlsLayerVideo');
-  layer.classList.remove('on');
-  video.pause(); video.src = '';
-  if (hlsLayerInstance) { try { hlsLayerInstance.destroy(); } catch(e){} hlsLayerInstance = null; }
-}
-
-// ─── postMessage listener — intercepts stream URLs from iframes ────────
-function isStreamUrl(url) {
-  if (typeof url !== 'string') return false;
-  const lc = url.toLowerCase();
-  if (lc.includes('.m3u8') || lc.includes('.mp4')) return true;
-  try { const u = new URL(url); if (RIVE_ALLOWED_DOMAINS.includes(u.hostname)) return true; } catch(e) {}
-  return false;
-}
-window.addEventListener('message', (evt) => {
-  if (!document.getElementById('v-watch')?.classList.contains('on')) return;
-  let data = evt.data;
-  if (typeof data === 'string') {
-    if (isStreamUrl(data)) { openHlsLayer(data, data); return; }
-    try { data = JSON.parse(data); } catch { return; }
-  }
-  if (typeof data === 'object' && data) {
-    const url = data.url || data.stream || data.src || data.href || '';
-    if (url && isStreamUrl(url)) { openHlsLayer(url, data.title || url); return; }
-    // Episode ended signals for anime
-    if (WATCH_MODE === 'anime') {
-      const flat = typeof evt.data === 'string' ? evt.data.toLowerCase() : JSON.stringify(data).toLowerCase();
-      const endSignals = ['"ended"','episode:ended','videoended','"complete"','playbackended','"finish"'];
-      if (endSignals.some(s => flat.includes(s))) { if (SETTINGS.autonext) onEpisodeEnded(); }
-    }
-  }
-});
-
-// Monitor iframe src for stream URL navigation
-(function watchIframeSrc() {
-  let lastSrc = '';
-  setInterval(() => {
-    const iframe = document.getElementById('vplayer');
-    if (!iframe || !document.getElementById('v-watch')?.classList.contains('on')) return;
-    try {
-      const cs = iframe.contentWindow?.location?.href;
-      if (cs && cs !== lastSrc && cs !== 'about:blank') { lastSrc = cs; if (isStreamUrl(cs)) openHlsLayer(cs, cs); }
-    } catch(e) {}
-  }, 800);
-})();
-
-// ─── AUTO-NEXT ────────────────────────────────────────────────────────
-let anRaf=null, anStart=null;
-const AN_SECS = 3;
-let endedHandledForEp = -1;
-function onEpisodeEnded(){
-  if(endedHandledForEp===CUR.ep) return;
-  endedHandledForEp=CUR.ep;
-  const total=CUR.anime?.episodes||1;
-  if(CUR.ep>=total){ toast('🎉 You finished the last episode!','🎉'); return; }
-  if(SETTINGS.autonext) showAutoNextOverlay();
-  else showEndedBar();
-}
-function showAutoNextOverlay(){
-  const nextEp=CUR.ep+1;
-  document.getElementById('anEpName').textContent=`Episode ${nextEp}`;
-  document.getElementById('anCountdown').textContent=AN_SECS;
-  document.getElementById('anBar').style.width='100%';
-  document.getElementById('autonextOverlay').classList.add('on');
-  anStart=performance.now();
-  if(anRaf) cancelAnimationFrame(anRaf);
-  function tick(){
-    const elapsed=performance.now()-anStart;
-    const rem=Math.max(0,AN_SECS*1000-elapsed);
-    document.getElementById('anCountdown').textContent=Math.ceil(rem/1000);
-    document.getElementById('anBar').style.width=((rem/(AN_SECS*1000))*100).toFixed(2)+'%';
-    if(rem<=0){ hideAutoNextOverlay(); playNextEpNow(); }
-    else anRaf=requestAnimationFrame(tick);
-  }
-  tick();
-}
-function hideAutoNextOverlay(){ document.getElementById('autonextOverlay').classList.remove('on'); if(anRaf){cancelAnimationFrame(anRaf);anRaf=null;} }
-function playNextEpNow(){
-  hideAutoNextOverlay(); dismissEndedBar();
-  if(CUR.ep>=(CUR.anime?.episodes||1)) return;
-  CUR.ep++; endedHandledForEp=-1;
-  highlightEpBtn(CUR.ep);
-  playCurrentEp(); toast(`▶️ Episode ${CUR.ep}`);
-}
-function cancelAutoNext(){ hideAutoNextOverlay(); toast('Auto Next cancelled','⏹️'); }
-function showEndedBar(){ if(CUR.ep<(CUR.anime?.episodes||1)) document.getElementById('epEndedBar').classList.add('on'); }
-function dismissEndedBar(){ document.getElementById('epEndedBar').classList.remove('on'); }
-function toggleAutoplay(){ SETTINGS.autoplay=!SETTINGS.autoplay; updateToggle('autoplayToggle',SETTINGS.autoplay); saveSettings(); toast(SETTINGS.autoplay?'Autoplay ON':'Autoplay OFF'); }
-function toggleAutonext(){ SETTINGS.autonext=!SETTINGS.autonext; updateToggle('autonextToggle',SETTINGS.autonext); saveSettings(); if(!SETTINGS.autonext) hideAutoNextOverlay(); toast(SETTINGS.autonext?'Auto Next ON':'Auto Next OFF'); }
-function updateToggle(id,on){ const el=document.getElementById(id); if(el) el.classList.toggle('on',on); }
 
 // ─── TOAST ────────────────────────────────────────────────────────────
 function toast(msg,icon='✅',dur=2800){
@@ -890,11 +400,7 @@ function getTmdbTitle(c){ return c.title || c.name || 'Unknown'; }
 function getTmdbYear(c){ const d = c.release_date || c.first_air_date; return d ? new Date(d).getFullYear() : ''; }
 
 // ─── VIEW NAVIGATION ─────────────────────────────────────────────────
-function showView(id){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  window.scrollTo(0,0);
-  if (id !== 'v-watch') { closeHlsLayer(); restoreIframePlayer(); }
+function showView(id){ document.querySelectorAll('.view').forEach(v=>v.classList.remove('on')); document.getElementById(id).classList.add('on'); window.scrollTo(0,0); }
 }
 function goHome(){ showView('v-home'); }
 
@@ -948,7 +454,6 @@ function makeTmdbCard(r){
 
 // ─── OPEN TMDB CONTENT (unified into v-watch) ─────────────────────────
 async function openTmdbContent(r){
-  WATCH_MODE = 'tmdb';
   TMDB_CUR.content = r;
   TMDB_CUR.type    = r.media_type;
   TMDB_CUR.season  = 1;
@@ -956,28 +461,8 @@ async function openTmdbContent(r){
   TMDB_CUR.srv     = 'rive-main';
   TMDB_CUR.allSeasons = [];
 
-  sxReset(); // reset stream extractor for new content
+  sxReset();
   showView('v-watch');
-
-  // Configure UI for TMDB mode
-  document.getElementById('autonextOverlay').classList.remove('on');
-
-  const srvcats = document.getElementById('srvcats');
-  srvcats.innerHTML = '';
-
-  // Build TMDB server tabs
-  RIVE_SERVERS.forEach((s,i)=>{
-    const btn = document.createElement('button');
-    btn.className = 'srvtab' + (i===0?' on':'');
-    btn.innerHTML = `<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick = ()=>{
-      document.querySelectorAll('#srvcats .srvtab').forEach(b=>b.classList.remove('on'));
-      btn.classList.add('on'); TMDB_CUR.srv = s.id;
-      closeHlsLayer();
-      playTmdbContent();
-    };
-    srvcats.appendChild(btn);
-  });
 
   renderTmdbWatchInfo(r);
 
@@ -991,11 +476,9 @@ async function openTmdbContent(r){
   } else {
     eppanel.style.display = 'none';
     seasonSel.style.display = 'none';
-    playTmdbContent();
   }
   loadTmdbSimilar(r.id, r.media_type);
   // Update notice
-  document.getElementById('noticeText').textContent = 'Powered by RiveStream. Use Stream Extractor for direct HLS/MP4 links. Click a download link in the player — streams open inline automatically.';
 }
 
 function renderTmdbWatchInfo(r){
@@ -1050,30 +533,19 @@ async function loadTmdbEpisodes(){
     btn.onclick=()=>{
       document.querySelectorAll('#epgrid .epbtn').forEach(b=>b.classList.remove('on'));
       btn.classList.add('on'); TMDB_CUR.ep=ep.episode_number;
-      closeHlsLayer();
-      playTmdbContent();
-      updateTmdbEpLabel();
+            updateTmdbEpLabel();
     };
     grid.appendChild(btn);
   });
-  if(eps.length){ TMDB_CUR.ep=eps[0].episode_number; playTmdbContent(); updateTmdbEpLabel(); }
+  if(eps.length){ TMDB_CUR.ep=eps[0].episode_number; updateTmdbEpLabel(); }
 }
 function onTmdbSeasonChange(){
   TMDB_CUR.season = parseInt(document.getElementById('tw-season-sel').value);
-  closeHlsLayer();
   loadTmdbEpisodes();
 }
 function updateTmdbEpLabel(){
   const t = TMDB_CUR.type==='tv' ? `Season ${TMDB_CUR.season} · Episode ${TMDB_CUR.ep}` : '';
   document.getElementById('wep-lbl').textContent = (TMDB_CUR.type==='tv'?'TV Show':'Movie') + (t?` · ${t}`:'');
-}
-function playTmdbContent(){
-  const srv = RIVE_SERVERS.find(s=>s.id===TMDB_CUR.srv) || RIVE_SERVERS[0];
-  const id  = TMDB_CUR.content.id;
-  let url;
-  if(TMDB_CUR.type === 'movie') url = srv.buildMovieUrl(id);
-  else url = srv.buildTvUrl(id, TMDB_CUR.season, TMDB_CUR.ep);
-  showIframeMode(url, { sandbox:'permissive', label:`${srv.label} · ${TMDB_CUR.type==='movie'?'Movie':'TV S'+TMDB_CUR.season+'E'+TMDB_CUR.ep}` });
 }
 async function loadTmdbSimilar(id, type){
   const el = document.getElementById('rellist');
@@ -1095,11 +567,7 @@ async function loadTmdbSimilar(id, type){
 
 // ─── OPEN ANIME ───────────────────────────────────────────────────────
 async function openAnime(a){
-  WATCH_MODE = 'anime';
-  CUR.anime=a; CUR.malId=a.mal_id; CUR.alId=null; CUR.ep=1; CUR.srvId=DEFAULT_SRV;
-  endedHandledForEp=-1;
-  sxReset(); // reset stream extractor for new anime
-  restoreIframePlayer();
+  CUR.anime=a; CUR.malId=a.mal_id; CUR.alId=null; CUR.ep=1;   sxReset();
   showView('v-watch');
 
   // Show anime-specific controls
@@ -1108,25 +576,8 @@ async function openAnime(a){
 
   renderWatchInfo(a);
   await buildEpGrid(a);
-  buildServerTabs();
-  updateToggle('autoplayToggle',SETTINGS.autoplay);
-  updateToggle('autonextToggle',SETTINGS.autonext);
-  playCurrentEp();
-  getAnilistId(CUR.malId).then(alId=>{
-    if(alId){ CUR.alId=alId; document.getElementById('id-badge').innerHTML=`<i class="fas fa-fingerprint"></i> MAL ${CUR.malId} · AL ${alId}`; appendAnilistTabs(alId); }
   });
   loadRecommendations(CUR.malId);
-  document.getElementById('noticeText').textContent = 'Auto Next triggers when an episode ends. Use Stream Extractor for direct HLS/MP4 links. Switch servers if one doesn\'t load.';
-}
-
-async function getAnilistId(malId){
-  if(CACHE['al_'+malId]) return CACHE['al_'+malId];
-  try{
-    const res=await fetch(ANILIST_GQL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:`{Media(idMal:${malId},type:ANIME){id}}`})});
-    const d=await res.json();
-    const id=d?.data?.Media?.id||null;
-    CACHE['al_'+malId]=id; return id;
-  }catch{ return null; }
 }
 
 function renderWatchInfo(a){
@@ -1144,12 +595,6 @@ function makeAnimeCard(a){
   const yearText = year ? ` · ${year}` : '';
   c.innerHTML=`<img src="${getImg(a)}" class="acard-img" loading="lazy" onerror="this.src='${FALLBACK}'"><div class="acard-ov"><div class="acard-play"><i class="fas fa-play"></i></div><div class="acard-ttl">${getTitle(a)}</div><div class="acard-sub">⭐ ${a.score||'N/A'}${yearText}</div></div>`;
   c.onclick=()=>openAnime(a); return c;
-}
-
-function highlightEpBtn(epNum) {
-  document.querySelectorAll('#epgrid .epbtn').forEach((b,i)=>b.classList.toggle('on',i+1===epNum));
-  const activeBtn = document.getElementById(`epbtn-${epNum}`);
-  if (activeBtn) activeBtn.scrollIntoView({ block:'nearest', behavior:'smooth' });
 }
 
 async function buildEpGrid(a){
@@ -1224,113 +669,9 @@ async function buildEpGrid(a){
     btn.onclick=()=>{
       document.querySelectorAll('#epgrid .epbtn').forEach(b=>b.classList.remove('on'));
       btn.classList.add('on'); CUR.ep=i;
-      dismissEndedBar(); endedHandledForEp=-1;
-      playCurrentEp();
     };
     grid.appendChild(btn);
   }
-}
-
-function buildServerTabs(){
-  const el=document.getElementById('srvcats'); el.innerHTML='';
-  const dubSide=document.createElement('div'); dubSide.className='srvside';
-  const dubLbl=document.createElement('div'); dubLbl.className='srvsidelbl dub'; dubLbl.innerHTML='<i class="fas fa-volume-up" style="margin-right:5px"></i>DUB'; dubSide.appendChild(dubLbl);
-  const subSide=document.createElement('div'); subSide.className='srvside';
-  const subLbl=document.createElement('div'); subLbl.className='srvsidelbl sub'; subLbl.innerHTML='<i class="fas fa-closed-captioning" style="margin-right:5px"></i>SUB'; subSide.appendChild(subLbl);
-  const hsubSide=document.createElement('div'); hsubSide.className='srvside';
-  const hsubLbl=document.createElement('div'); hsubLbl.className='srvsidelbl'; hsubLbl.innerHTML='<i class="fas fa-language" style="margin-right:5px"></i>HSUB'; hsubLbl.style.color='#22c55e'; hsubLbl.style.borderColor='rgba(34,197,94,.3)'; hsubSide.appendChild(hsubLbl);
-  MAL_SERVERS.forEach(s=>{
-    const isDub=s.id.includes('dub');
-    const btn=document.createElement('button');
-    btn.className='srvtab '+(isDub?'dub-tab':'sub-tab')+(s.id===DEFAULT_SRV?' on':'');
-    btn.dataset.srvid=s.id;
-    btn.innerHTML=`<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=s.id; endedHandledForEp=-1; playCurrentEp(); };
-    (isDub?dubSide:subSide).appendChild(btn);
-  });
-  KIWI_SERVERS.forEach(s=>{
-    const isDub=s.type==='dub';
-    const btn=document.createElement('button');
-    btn.className='srvtab '+(isDub?'dub-tab':'sub-tab');
-    btn.dataset.srvid=s.id;
-    btn.innerHTML=`<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=s.id; endedHandledForEp=-1; playCurrentEp(); };
-    (isDub?dubSide:subSide).appendChild(btn);
-  });
-  VIDWISH_REALID_SERVERS.forEach(s=>{
-    const isDub=s.type==='dub';
-    const btn=document.createElement('button');
-    btn.className='srvtab '+(isDub?'dub-tab':'sub-tab');
-    btn.dataset.srvid=s.id;
-    btn.innerHTML=`<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=s.id; endedHandledForEp=-1; playCurrentEp(); };
-    (isDub?dubSide:subSide).appendChild(btn);
-  });
-  HIANIME_DUB_SERVERS.forEach(srv => {
-    const btn=document.createElement('button'); btn.className='srvtab dub-tab'; btn.dataset.srvid=`hianime-dub-${srv}`;
-    btn.innerHTML=`<span class="dot"></span>🌸 ${srv} DUB`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=`hianime-dub-${srv}`; HIANIME_CUR_DUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); };
-    dubSide.appendChild(btn);
-  });
-  HIANIME_SUB_SERVERS.forEach(srv => {
-    const btn=document.createElement('button'); btn.className='srvtab sub-tab'; btn.dataset.srvid=`hianime-sub-${srv}`;
-    btn.innerHTML=`<span class="dot"></span>🌸 ${srv} SUB`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=`hianime-sub-${srv}`; HIANIME_CUR_SUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); };
-    subSide.appendChild(btn);
-  });
-  HIANIME_HSUB_SERVERS.forEach(srv => {
-    const btn=document.createElement('button'); btn.className='srvtab'; btn.dataset.srvid=`hianime-hsub-${srv}`;
-    btn.innerHTML=`<span class="dot"></span>🌸 ${srv} HSUB`; btn.style.borderColor='rgba(34,197,94,.3)';
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=`hianime-hsub-${srv}`; HIANIME_CUR_HSUB_SRV=srv; endedHandledForEp=-1; playCurrentEp(); };
-    hsubSide.appendChild(btn);
-  });
-  el.appendChild(dubSide);
-  el.appendChild(subSide);
-  el.appendChild(hsubSide);
-}
-
-function appendAnilistTabs(alId){
-  const el=document.getElementById('srvcats');
-  const sides=el.querySelectorAll('.srvside');
-  const dubSide=sides[0], subSide=sides[1];
-  AL_SERVERS.forEach(s=>{
-    const isDub=s.id.includes('dub');
-    const btn=document.createElement('button');
-    btn.className='srvtab '+(isDub?'dub-tab':'sub-tab');
-    btn.innerHTML=`<span class="dot"></span>${s.icon} ${s.label}`;
-    btn.onclick=()=>{ document.querySelectorAll('.srvtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); CUR.srvId=s.id; endedHandledForEp=-1; playCurrentEp(); };
-    const side = isDub ? dubSide : subSide;
-    const firstHianime = Array.from(side.querySelectorAll('.srvtab')).find(b => b.innerHTML.includes('🌸'));
-    if (firstHianime) side.insertBefore(btn, firstHianime); else side.appendChild(btn);
-  });
-}
-
-function playCurrentEp(){
-  if (WATCH_MODE !== 'anime') return;
-  dismissEndedBar();
-  const epTitle = EPISODE_TITLES_CACHE[CUR.malId]?.[CUR.ep] || '';
-  const epTitleSuffix = epTitle ? ` - ${epTitle}` : '';
-  if (CUR.srvId && CUR.srvId.startsWith('hianime-')) {
-    const parts = CUR.srvId.split('-');
-    const type = parts[1];
-    const serverGroup = parts.slice(2).join('-');
-    playHianimeServer(type, serverGroup);
-    return;
-  }
-  const kiwiSrv = KIWI_SERVERS.find(s => s.id === CUR.srvId);
-  if (kiwiSrv) { playKiwiServer(CUR.srvId); return; }
-  const vwRidSrv = VIDWISH_REALID_SERVERS.find(s => s.id === CUR.srvId);
-  if (vwRidSrv) { playVidWishRealid(CUR.srvId); return; }
-  restoreIframePlayer();
-  const malSrv=MAL_SERVERS.find(s=>s.id===CUR.srvId);
-  const alSrv=AL_SERVERS.find(s=>s.id===CUR.srvId);
-  let url, label;
-  if(malSrv){ url=malSrv.buildUrl(CUR.malId,CUR.ep); label=`${malSrv.label} · Ep ${CUR.ep}${epTitleSuffix}`; }
-  else if(alSrv&&CUR.alId){ url=alSrv.buildUrl(CUR.alId,CUR.ep); label=`${alSrv.label} · Ep ${CUR.ep}${epTitleSuffix}`; }
-  else{ url=MAL_SERVERS[0].buildUrl(CUR.malId,CUR.ep); label=`${MAL_SERVERS[0].label} · Ep ${CUR.ep}${epTitleSuffix}`; }
-  showIframeMode(url, { sandbox:'permissive', label });
-  document.getElementById('wep-lbl').textContent=label;
-  highlightEpBtn(CUR.ep);
 }
 
 async function loadRecommendations(malId){
@@ -1447,7 +788,7 @@ async function filterGenre(gid,btn){
 document.getElementById('sinput').addEventListener('keypress',e=>{ if(e.key==='Enter') doSearch(); });
 
 // ─── STREAM EXTRACTOR — inside panel ───────────────────────
-let SX = { running:false, results:[], embedUrls:[], activeBtn:null };
+let SX = { running:false, results:[], embedUrls:[] };
 
 function sxApiBase() { return ''; }
 
@@ -1478,7 +819,7 @@ function sxRenderBody(items) {
     html += `<div class="sx-section-lbl"><i class="fas fa-code"></i> Iframe / Embed Servers (${embedItems.length})</div><div class="sx-btns" id="sx-embed-btns">`;
     embedItems.forEach((it, i) => {
       const id = `sx-emb-${i}`;
-      html += `<button class="sx-btn iframe-btn" id="${id}" onclick="sxPlayEmbed('${escHtml(it.embed_url)}','${escHtml(it.host_label)}','${id}')"><span class="sx-dot"></span>${escHtml(it.host_label)}<span class="sx-badge iframe">IFRAME</span></button>`;
+      html += `<button class="sx-btn iframe-btn" id="${id}" onclick="navigator.clipboard?.writeText('${escHtml(it.embed_url)}');toast('URL copied','📋',2000)"><span class="sx-dot"></span>${escHtml(it.host_label)}<span class="sx-badge iframe">IFRAME</span></button>`;
     });
     html += `</div>`;
   }
@@ -1491,7 +832,7 @@ function sxRenderBody(items) {
       if (it.status === 'ok' && it.stream_url) {
         const badge = it.stream_type === 'm3u8' ? 'M3U8' : it.stream_type === 'mp4' ? 'MP4' : (it.stream_type?.toUpperCase()||'?');
         const badgeClass = it.stream_type === 'm3u8' ? 'm3u8' : it.stream_type === 'mp4' ? 'mp4' : '';
-        html += `<button class="sx-btn ok" id="${id}" onclick="sxPlayStream('${escHtml(it.stream_url)}','${escHtml(it.host_label)}','${escHtml(it.stream_type||'')}','${escHtml(JSON.stringify(it.headers||{}))}','${id}')"><span class="sx-dot" style="background:var(--green)"></span>${escHtml(it.host_label)}<span class="sx-badge ${badgeClass}">${badge}</span></button>`;
+        html += `<button class="sx-btn ok" id="${id}" onclick="navigator.clipboard?.writeText('${escHtml(it.stream_url)}');toast('URL copied','📋',2000)"><span class="sx-dot" style="background:var(--green)"></span>${escHtml(it.host_label)}<span class="sx-badge ${badgeClass}">${badge}</span></button>`;
       } else {
         html += `<button class="sx-btn" disabled title="${escHtml(it.error||'Failed')}"><span class="sx-dot" style="background:#ff6b6b"></span>${escHtml(it.host_label)}<span class="sx-badge err">FAIL</span></button>`;
       }
@@ -1588,40 +929,8 @@ async function sxExtract() {
   SX.running = false;
 }
 
-// Play an iframe embed — loads into the main player iframe
-function sxPlayEmbed(embedUrl, label, btnId) {
-  sxSetActiveBtn(btnId);
-  showIframeMode(embedUrl, { sandbox:'permissive', label:`SX: ${label}` });
-  document.getElementById('wep-lbl').textContent = `Iframe · ${label}`;
-  toast(`Loading iframe: ${label}`, '📺', 2500);
-}
-
-// Play an extracted stream — opens in the inline HLS layer
-function sxPlayStream(streamUrl, label, streamType, headersJson, btnId) {
-  sxSetActiveBtn(btnId);
-  let headers = {};
-  try { headers = JSON.parse(headersJson); } catch {}
-  const referer = headers.Referer || headers.referer || '';
-  let finalUrl = streamUrl;
-  if ((streamType === 'm3u8' || streamUrl.includes('.m3u8')) && referer) {
-    finalUrl = `${sxApiBase()}/proxy?url=${encodeURIComponent(streamUrl)}&ref=${encodeURIComponent(referer)}`;
-  }
-  openHlsLayer(finalUrl, `${label} · ${streamType?.toUpperCase()||'STREAM'}`);
-  document.getElementById('wep-lbl').textContent = `${streamType?.toUpperCase()||'Stream'} · ${label}`;
-  toast(`Playing ${label} (${streamType?.toUpperCase()||'stream'})`, '🎬', 2500);
-}
-
-function sxSetActiveBtn(btnId) {
-  document.querySelectorAll('.sx-btn.on').forEach(b => b.classList.remove('on'));
-  const btn = document.getElementById(btnId);
-  if (btn) btn.classList.add('on');
-  SX.activeBtn = btnId;
-}
-
 // ─── INIT ─────────────────────────────────────────────────────────────
 async function init(){
-  updateToggle('autoplayToggle',SETTINGS.autoplay);
-  updateToggle('autonextToggle',SETTINGS.autonext);
   await loadHero();
   await loadTrending();
   await loadTop10();
